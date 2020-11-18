@@ -16,7 +16,7 @@
         :max="option.max"
         :step="option.step"
         @input="input($event, option)"
-        @change="saveChange($event, option)"
+        @change="saveChange(option)"
       ></b-slider>
     </a>
   </li>
@@ -45,8 +45,8 @@ export default {
       this.$root.$emit("alterphoto", option.func, value);
       option.val = value;
     },
-    saveChange(value, option) {
-      this.$root.$emit("savechange", option.func, value);
+    saveChange(option) {
+      this.$root.$emit("savechange", option);
     }
   }
 };

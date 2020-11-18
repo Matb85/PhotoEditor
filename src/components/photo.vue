@@ -1,7 +1,26 @@
 <template>
   <div class="photo-con">
     <div id="pixiCon">
-      <canvas id="canvas" ref="canvas" width="900" height="600"></canvas>
+      <canvas
+        v-show="$store.state.fileReady"
+        id="canvas"
+        ref="canvas"
+        width="630"
+        height="420"
+      ></canvas>
+      <b-upload
+        v-if="!$store.state.fileReady"
+        @input="initimage($event)"
+        accept=".jpg,.png"
+        drag-drop
+      >
+        <section class="section">
+          <div class="content has-text-centered">
+            <b-icon icon="upload" size="is-large"></b-icon>
+            <p>Drop your files here or click to upload</p>
+          </div>
+        </section>
+      </b-upload>
     </div>
   </div>
 </template>
@@ -13,20 +32,39 @@ export default {
   name: "photo",
   data() {
     return {
-      src: require("@/assets/image.jpg"),
-      image: new Image(),
-      history: [],
+      image: "",
     };
   },
   methods: {
     async drawImage() {
-      const ctx = this.ctx;
-      ctx.drawImage(this.image, 0, 0, 900, 600);
+      this.ctx.putImageData(this.image, 0, 0, 630, 420);
     },
-    init() {
-      this.canvas;
-      this.image.onload = () => {
-        this.drawImage();
+    initimage(event) {
+      const src = URL.createObjectURL(event);
+      const image = new Image();
+      image.src = src;
+      image.onload = () => {
+        URL.revokeObjectURL(src);
+        const canvas = document.createElement("CANVAS");
+        const ctx = canvas.getContext("2d");
+        canvas.width = image.width;
+        canvas.height = image.height;
+        ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+        if (!this.$store.state.fileReady) {
+          this.$store.commit("initImage", canvas.toDataURL("image/jpeg", 0.7));
+        }
+        this.ctx.drawImage(image, 0, 0, 630, 420);
+        this.image = this.ctx.getImageData(0, 0, 630, 420);
+        // this.alterphoto("filter", "oceanic");
+      };
+    },
+    afterReload() {
+      const src = this.$store.state.orginalsrc;
+      const image = new Image();
+      image.src = src;
+      image.onload = () => {
+        this.ctx.drawImage(image, 0, 0, 630, 420);
+        this.image = this.ctx.getImageData(0, 0, 630, 420);
         // this.alterphoto("filter", "oceanic");
       };
     },
@@ -37,18 +75,36 @@ export default {
       Photon[func](img, val);
       Photon.putImageData(this.canvas, this.ctx, img);
     },
+    async savechange(option) {
+      this.image = this.ctx.getImageData(0, 0, 630, 420);
+      this.drawImage();
+      this.$store.commit("updateHistory", {
+        id: this.$store.state.history.length,
+        name: option.name,
+        func: option.func,
+        val: option.val,
+      });
+    },
+    async reset(option) {
+      console.log(option);
+    },
   },
   mounted() {
     this.canvas = this.$refs.canvas;
     this.ctx = this.canvas.getContext("2d");
     Photon.then((result) => {
       Photon = result;
-      this.image.src = this.src;
-      this.init();
       console.dir(Photon);
       this.$root.$on("alterphoto", (func, val) => {
         this.alterphoto(func, val);
       });
+      this.$root.$on("savechange", (option) => {
+        this.savechange(option);
+      });
+      this.$root.$on("reset", (option) => {
+        this.reset(option);
+      });
+      if (this.$store.state.fileReady) this.afterReload();
     }).catch((err) => console.log(err));
   },
 };

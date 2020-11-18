@@ -7,7 +7,7 @@
     open
   >
     <div class="px-1 py-5 mt-6">
-      <b-menu class="is-custom-mobile">
+      <b-menu :class="{ disabled: !$store.state.fileReady }">
         <b-menu-list>
           <b-menu-item
             animation="fade"
@@ -48,7 +48,7 @@ import optionCheckBox from "@/components/optionCheckBox.vue";
 export default {
   mixins: [categories],
   components: { optionSlider, optionCheckBox },
-  name: "sidebar"
+  name: "sidebar",
 };
 </script>
 
@@ -64,5 +64,10 @@ export default {
   &:hover {
     text-decoration: underline;
   }
+}
+.disabled {
+  pointer-events: none;
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 </style>
