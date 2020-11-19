@@ -19,8 +19,8 @@ export default new Vuex.Store({
       state.orginalsrc = src;
       state.fileReady = true;
       console.log(src);
-      //window.sessionStorage.setItem("orginalsrc", src);
-      //window.sessionStorage.setItem("fileReady", "true");
+      window.sessionStorage.setItem("orginalsrc", src);
+      window.sessionStorage.setItem("fileReady", "true");
     },
     updateHistory(state, log) {
       state.history.push(log);

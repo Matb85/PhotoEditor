@@ -27,7 +27,7 @@
 
 <script>
 let Photon = import("@silvia-odwyer/photon");
-
+import worker from "@/WebWorker";
 export default {
   name: "photo",
   data() {
@@ -37,26 +37,24 @@ export default {
   },
   methods: {
     async drawImage() {
-      this.ctx.putImageData(this.image, 0, 0, 630, 420);
+      this.ctx.putImageData(this.image, 0, 0);
     },
     initimage(event) {
-      const src = URL.createObjectURL(event);
-      const image = new Image();
-      image.src = src;
-      image.onload = () => {
-        URL.revokeObjectURL(src);
-        const canvas = document.createElement("CANVAS");
-        const ctx = canvas.getContext("2d");
-        canvas.width = image.width;
-        canvas.height = image.height;
-        ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-        if (!this.$store.state.fileReady) {
-          this.$store.commit("initImage", canvas.toDataURL("image/jpeg", 0.7));
-        }
-        this.ctx.drawImage(image, 0, 0, 630, 420);
-        this.image = this.ctx.getImageData(0, 0, 630, 420);
-        // this.alterphoto("filter", "oceanic");
+      const reader = new FileReader();
+      reader.onload = () => {
+        console.log(reader.result);
+        const image = new Image();
+        image.src = reader.result;
+        image.onload = () => {
+          if (!this.$store.state.fileReady) {
+            this.$store.commit("initImage", reader.result);
+          }
+          this.ctx.drawImage(image, 0, 0, 630, 420);
+          this.image = this.ctx.getImageData(0, 0, 630, 420);
+          // this.alterphoto("filter", "oceanic");
+        };
       };
+      reader.readAsDataURL(event);
     },
     afterReload() {
       const src = this.$store.state.orginalsrc;
@@ -74,6 +72,7 @@ export default {
       const img = Photon.open_image(this.canvas, this.ctx);
       Photon[func](img, val);
       Photon.putImageData(this.canvas, this.ctx, img);
+      //this.ctx.putImageData(Photon.to_image_data(img), 0, 0);
     },
     async savechange(option) {
       this.image = this.ctx.getImageData(0, 0, 630, 420);
@@ -90,6 +89,7 @@ export default {
     },
   },
   mounted() {
+    console.log(worker);
     this.canvas = this.$refs.canvas;
     this.ctx = this.canvas.getContext("2d");
     Photon.then((result) => {
