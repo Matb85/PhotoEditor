@@ -32,7 +32,7 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "tests/**/*.ts",
-    "tests/**/*.tsx", "src/mixins/categories.ts", "src/WebWorker/worker.js", "src/WebWorker/index.js"
+    "tests/**/*.tsx", "src/mixins/categories.ts", "src/WebWorker/worker.js", "src/WebWorker/index.js", "src/photonWorker.js"
   ],
   "exclude": [
     "node_modules"

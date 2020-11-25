@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import categories from "@/mixins/categories.ts";
+import categories from "@/store/categories.ts";
 import optionSlider from "@/components/optionSlider.vue";
 import optionCheckBox from "@/components/optionCheckBox.vue";
 export default {

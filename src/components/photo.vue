@@ -27,12 +27,40 @@
 
 <script>
 let Photon = import("@silvia-odwyer/photon");
-import worker from "@/WebWorker";
+
 export default {
   name: "photo",
   data() {
+    const workers = [];
+    for (let i = 0; i < 3; i++) {
+      const worker = new Worker("@/photonWorker.js", { type: "module" });
+      const send = message =>
+        worker.postMessage({
+          message,
+        });
+      worker.addEventListener("message", event => {
+        this.drawImage();
+        this.queue.splice(0, 1);
+        this.ctx.putImageData(
+          new ImageData(
+            event.data.message.data,
+            event.data.message.width,
+            event.data.message.height
+          ),
+          0,
+          0
+        );
+      });
+      workers.push({
+        worker: worker,
+        send: send,
+      });
+    }
     return {
+      workers,
       image: "",
+      curworker: 0,
+      queue: [],
     };
   },
   methods: {
@@ -63,16 +91,23 @@ export default {
       image.onload = () => {
         this.ctx.drawImage(image, 0, 0, 630, 420);
         this.image = this.ctx.getImageData(0, 0, 630, 420);
-        // this.alterphoto("filter", "oceanic");
       };
     },
     async alterphoto(func, val) {
-      this.drawImage();
-      if (val == false) return;
-      const img = Photon.open_image(this.canvas, this.ctx);
-      Photon[func](img, val);
-      Photon.putImageData(this.canvas, this.ctx, img);
-      //this.ctx.putImageData(Photon.to_image_data(img), 0, 0);
+      this.queue.unshift(val);
+      if (this.queue.length > 7) {
+        this.queue.splice(1, 1);
+        this.queue.splice(3, 1);
+        this.queue.splice(5, 1);
+      }
+      //console.log(this.queue);
+      if (this.curworker > 2) this.curworker = 0;
+      this.workers[this.curworker].send({
+        img: this.image,
+        func: func,
+        val: this.queue[0],
+      });
+      this.curworker++;
     },
     async savechange(option) {
       this.image = this.ctx.getImageData(0, 0, 630, 420);
@@ -89,23 +124,22 @@ export default {
     },
   },
   mounted() {
-    console.log(worker);
     this.canvas = this.$refs.canvas;
     this.ctx = this.canvas.getContext("2d");
-    Photon.then((result) => {
+    Photon.then(result => {
       Photon = result;
-      console.dir(Photon);
+      console.log(Photon);
       this.$root.$on("alterphoto", (func, val) => {
         this.alterphoto(func, val);
       });
-      this.$root.$on("savechange", (option) => {
+      this.$root.$on("savechange", option => {
         this.savechange(option);
       });
-      this.$root.$on("reset", (option) => {
+      this.$root.$on("reset", option => {
         this.reset(option);
       });
       if (this.$store.state.fileReady) this.afterReload();
-    }).catch((err) => console.log(err));
+    }).catch(err => console.log(err));
   },
 };
 </script>

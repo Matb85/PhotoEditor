@@ -43,6 +43,7 @@ export default {
                         new Slider("Offset green", "offset_green", 5, -1 * colordev, colordev),
                         new Slider("Offset red", "offset_red", 5, -1 * colordev, colordev),
                         new Slider("Constast", "adjust_contrast", 5, -1 * colordev, colordev),
+                        new Slider("brightness", "inc_brightness", 5, -1 * 255, 255),
                     ],
                 },
                 {
@@ -67,9 +68,9 @@ export default {
                     id: 5,
                     name: "Hue rotate",
                     sliders: [
-                        new Slider("hsl", "hue_rotate_hsl", ldStep, -1, 1),
-                        new Slider("hsv", "hue_rotate_hsv", ldStep, -1, 1),
-                        new Slider("lch", "hue_rotate_lch", ldStep, -1, 1),
+                        new Slider("hsl", "hue_rotate_hsl", ldStep, 0, 1),
+                        new Slider("hsv", "hue_rotate_hsv", ldStep, 0, 1),
+                        new Slider("lch", "hue_rotate_lch", ldStep, 0, 1),
                     ]
                 },
                 {

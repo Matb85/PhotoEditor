@@ -1,11 +1,7 @@
-const WorkerPlugin = require('worker-plugin')
+const WorkerPlugin = require("worker-plugin");
+
 module.exports = {
-    configureWebpack: {
-        output: {
-            globalObject: "this"
-        },
-        plugins: [
-            new WorkerPlugin()
-        ]
-    }
+  configureWebpack: {
+    plugins: [new WorkerPlugin()],
+  },
 };
