@@ -1,11 +1,10 @@
 import Vue from "vue";
 import Vuex from "vuex";
 Vue.use(Vuex);
-
 interface State {
-  orginalsrc: string,
-  fileReady: boolean,
-  history: object[],
+  orginalsrc: string;
+  fileReady: boolean;
+  history: object[];
 }
 export default new Vuex.Store({
   state: {

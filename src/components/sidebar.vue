@@ -1,11 +1,5 @@
 <template>
-  <b-sidebar
-    class="sidebar"
-    position="absolute"
-    type="is-white"
-    fullheight
-    open
-  >
+  <b-sidebar class="sidebar" position="absolute" type="is-white" fullheight open>
     <div class="px-1 py-5 mt-6">
       <b-menu :class="{ disabled: !$store.state.fileReady }">
         <b-menu-list>
@@ -26,13 +20,20 @@
               :option="option"
             ></optionCheckBox>
           </b-menu-item>
-
-          <b-menu-item animation="fade" label="filters">
+          <b-menu-item animation="fade" label="Photon filters">
             <optionCheckBox
-              v-for="option in filters.checkboxes"
+              v-for="option in Pfilters.checkboxes"
               :key="option.key"
               :option="option"
-              func="filter"
+              func="Pfilter"
+            ></optionCheckBox>
+          </b-menu-item>
+          <b-menu-item animation="fade" label="Instagram filters">
+            <optionCheckBox
+              v-for="option in Ifilters.checkboxes"
+              :key="option.key"
+              :option="option"
+              func="Ifilter"
             ></optionCheckBox>
           </b-menu-item>
         </b-menu-list>
@@ -42,7 +43,7 @@
 </template>
 
 <script>
-import categories from "@/store/categories.ts";
+import categories from "@/store/options.ts";
 import optionSlider from "@/components/optionSlider.vue";
 import optionCheckBox from "@/components/optionCheckBox.vue";
 export default {

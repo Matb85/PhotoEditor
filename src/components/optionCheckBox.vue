@@ -13,12 +13,12 @@ export default {
   name: "optionCheckBox",
   props: {
     option: {
-      required: true
+      required: true,
     },
     func: {
       required: false,
-      default: "regular"
-    }
+      default: "regular",
+    },
   },
   data() {
     return {
@@ -28,13 +28,13 @@ export default {
           this.$root.$emit("alterphoto", option.func, value);
           option.val = value;
         },
-        filter: (value, option) => {
+        Pfilter: (value, option) => {
           console.log(value);
           this.$root.$emit("alterphoto", "filter", value ? option.func : value);
           option.val = value;
-        }
-      }
+        },
+      },
     };
-  }
+  },
 };
 </script>

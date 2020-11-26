@@ -15,7 +15,7 @@
             class="button is-primary"
             href="https://silvia-odwyer.github.io/photon/"
           >
-            <strong>Photon's page</strong>
+            <strong>Download</strong>
           </a>
         </div>
       </b-navbar-item>
@@ -25,7 +25,7 @@
 
 <script lang="ts">
 export default {
-  name: "navbar"
+  name: "navbar",
 };
 </script>
 

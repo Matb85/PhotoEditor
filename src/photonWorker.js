@@ -17,7 +17,6 @@ async function alterPhoto(msg) {
       height: height,
     },
   });
-  console.log(msg.data.message.val);
   //console.timeEnd("time");
 }
 

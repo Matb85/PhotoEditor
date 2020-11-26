@@ -8,20 +8,20 @@
         width="630"
         height="420"
       ></canvas>
-      <b-upload
-        v-if="!$store.state.fileReady"
-        @input="initimage($event)"
-        accept=".jpg,.png"
-        drag-drop
-      >
-        <section class="section">
-          <div class="content has-text-centered">
-            <b-icon icon="upload" size="is-large"></b-icon>
-            <p>Drop your files here or click to upload</p>
-          </div>
-        </section>
-      </b-upload>
     </div>
+    <b-upload
+      v-if="!$store.state.fileReady"
+      @input="initimage($event)"
+      accept=".jpg,.png"
+      drag-drop
+    >
+      <section class="section">
+        <div class="content has-text-centered">
+          <b-icon icon="upload" size="is-large"></b-icon>
+          <p>Drop your files here or click to upload</p>
+        </div>
+      </section>
+    </b-upload>
   </div>
 </template>
 
@@ -39,7 +39,6 @@ export default {
           message,
         });
       worker.addEventListener("message", event => {
-        this.drawImage();
         this.queue.splice(0, 1);
         this.ctx.putImageData(
           new ImageData(
@@ -89,6 +88,7 @@ export default {
       const image = new Image();
       image.src = src;
       image.onload = () => {
+        this.canvas.style.filter = `opacity(1) brightness(1) saturate(1) contrast(1) hue-rotate(0deg) invert(0) sepia(0) grayscale(0%)`;
         this.ctx.drawImage(image, 0, 0, 630, 420);
         this.image = this.ctx.getImageData(0, 0, 630, 420);
       };
@@ -108,6 +108,9 @@ export default {
         val: this.queue[0],
       });
       this.curworker++;
+    },
+    async filter() {
+      this.canvas.style.filter = `opacity(1) brightness(1) hue-rotate(180deg) saturate(1) contrast(3) invert(1) sepia(0.1) grayscale(10%)`;
     },
     async savechange(option) {
       this.image = this.ctx.getImageData(0, 0, 630, 420);
@@ -130,7 +133,7 @@ export default {
       Photon = result;
       console.log(Photon);
       this.$root.$on("alterphoto", (func, val) => {
-        this.alterphoto(func, val);
+        this["filter"](func, val);
       });
       this.$root.$on("savechange", option => {
         this.savechange(option);
@@ -155,7 +158,7 @@ export default {
   justify-content: center;
   align-items: center;
 
-  #pixiCon #canvas {
+  canvas {
     width: 420px;
     height: 280px;
   }
