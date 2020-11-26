@@ -25,16 +25,21 @@ export default {
       input: {
         regular: (value, option) => {
           console.log(value);
-          this.$root.$emit("alterphoto", option.func, value);
+          this.emitAlterp(option.tech, option.func, value);
           option.val = value;
         },
-        Pfilter: (value, option) => {
+        filter: (value, option) => {
           console.log(value);
-          this.$root.$emit("alterphoto", "filter", value ? option.func : value);
+          this.emitAlterp(option.tech, "filter", value ? option.func : value);
           option.val = value;
         },
       },
     };
+  },
+  methods: {
+    emitAlterp(tech, func, value) {
+      this.$root.$emit("alterphoto", tech, func, value);
+    },
   },
 };
 </script>

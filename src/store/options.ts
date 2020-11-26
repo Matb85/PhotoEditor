@@ -1,10 +1,12 @@
 let id = 0;
 class Option {
+  tech: string;
   id: number;
   name: string;
-  func: string | Array<number>;
+  func: string | object;
   val: any;
-  constructor(name: string, func: string | Array<number>) {
+  constructor(name: string, func: string | object, tech = "photon") {
+    this.tech = tech;
     this.id = id;
     id++;
     this.name = name;
@@ -26,11 +28,22 @@ class Slider extends Option {
   }
 }
 class CanvasSlider extends Slider {
-  canvas: boolean;
   constructor(name: string, func: string, step: number, min: number, max: number) {
     super(name, func, step, min, max);
-    this.canvas = true;
+    this.tech = "canFil";
   }
+}
+function filterset(f: any) {
+  return [
+    f.opacity - 1 || 0,
+    f.brightness - 1 || 0,
+    f.hueRotate || 0,
+    f.saturate - 1 || 0,
+    f.contrast - 1 || 0,
+    f.invert || 0,
+    f.sepia || 0,
+    f.grayscale || 0,
+  ];
 }
 
 const colordev = 100;
@@ -54,19 +67,16 @@ export default {
         {
           id: 6,
           name: "Grayscale",
-          sliders: [new Slider("with shade count", "grayscale_shades", 1, 0, 50)],
+          sliders: [
+            new CanvasSlider("regular", "grayscale", 0.01, 0, 1),
+            new Slider("with shade count", "grayscale_shades", 1, 0, 50),
+          ],
           checkboxes: [
             new Option("Blue Channel", "b_grayscale"),
             new Option("Green Channel", "g_grayscale"),
             new Option("Red Channel", "r_grayscale"),
             new Option("Human corrected", "grayscale_human_corrected"),
           ],
-        },
-        {
-          id: 3,
-          name: "Monochrome",
-          sliders: [new Slider("Threshold", "threshold", 5, 0, 300)],
-          checkboxes: [new Option("Decompose max", "decompose_max"), new Option("Decompose min", "decompose_min")],
         },
         {
           id: 7,
@@ -132,7 +142,22 @@ export default {
       },
       Ifilters: {
         checkboxes: [
-            new Option("1977", [0,0,0])
+          new Option("1977", filterset({ sepia: 0.5, hueRotate: 30, saturate: 1.4 }), "canFil"),
+          new Option("aden", filterset({ sepia: 0.2, brightness: 1.15, saturate: 1.4 }), "canFil"),
+          new Option("amaro", filterset({ sepia: 0.35, brightness: 1.2, contrast: 1.1, saturate: 1.43 }), "canFil"),
+          new Option("ashby", filterset({ sepia: 0.5, contrast: 1.2, saturate: 1.8 }), "canFil"),
+          new Option(
+            "brannan",
+            filterset({
+              sepia: 0.4,
+              brightness: 1.1,
+              contrast: 1.25,
+              saturate: 0.9,
+              hueRotate: -2,
+            }),
+            "canFil"
+          ),
+          new Option("brooklyn", filterset({ sepia: 0.25, contrast: 1.25, brightness: 1.25, hueRotate: 5 }), "canFil"),
         ],
       },
     };

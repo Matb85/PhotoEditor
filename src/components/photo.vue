@@ -26,42 +26,12 @@
 </template>
 
 <script>
+import photonMixin from "@/mixins/photonMixin";
+import canvasMixin from "@/mixins/canvasMixin";
 let Photon = import("@silvia-odwyer/photon");
-
 export default {
   name: "photo",
-  data() {
-    const workers = [];
-    for (let i = 0; i < 3; i++) {
-      const worker = new Worker("@/photonWorker.js", { type: "module" });
-      const send = message =>
-        worker.postMessage({
-          message,
-        });
-      worker.addEventListener("message", event => {
-        this.queue.splice(0, 1);
-        this.ctx.putImageData(
-          new ImageData(
-            event.data.message.data,
-            event.data.message.width,
-            event.data.message.height
-          ),
-          0,
-          0
-        );
-      });
-      workers.push({
-        worker: worker,
-        send: send,
-      });
-    }
-    return {
-      workers,
-      image: "",
-      curworker: 0,
-      queue: [],
-    };
-  },
+  mixins: [photonMixin, canvasMixin],
   methods: {
     async drawImage() {
       this.ctx.putImageData(this.image, 0, 0);
@@ -93,38 +63,6 @@ export default {
         this.image = this.ctx.getImageData(0, 0, 630, 420);
       };
     },
-    async alterphoto(func, val) {
-      this.queue.unshift(val);
-      if (this.queue.length > 7) {
-        this.queue.splice(1, 1);
-        this.queue.splice(3, 1);
-        this.queue.splice(5, 1);
-      }
-      //console.log(this.queue);
-      if (this.curworker > 2) this.curworker = 0;
-      this.workers[this.curworker].send({
-        img: this.image,
-        func: func,
-        val: this.queue[0],
-      });
-      this.curworker++;
-    },
-    async filter() {
-      this.canvas.style.filter = `opacity(1) brightness(1) hue-rotate(180deg) saturate(1) contrast(3) invert(1) sepia(0.1) grayscale(10%)`;
-    },
-    async savechange(option) {
-      this.image = this.ctx.getImageData(0, 0, 630, 420);
-      this.drawImage();
-      this.$store.commit("updateHistory", {
-        id: this.$store.state.history.length,
-        name: option.name,
-        func: option.func,
-        val: option.val,
-      });
-    },
-    async reset(option) {
-      console.log(option);
-    },
   },
   mounted() {
     this.canvas = this.$refs.canvas;
@@ -132,14 +70,11 @@ export default {
     Photon.then(result => {
       Photon = result;
       console.log(Photon);
-      this.$root.$on("alterphoto", (func, val) => {
-        this["filter"](func, val);
+      this.$root.$on("alterphoto", (tech, func, val) => {
+        this[tech](func, val);
       });
       this.$root.$on("savechange", option => {
         this.savechange(option);
-      });
-      this.$root.$on("reset", option => {
-        this.reset(option);
       });
       if (this.$store.state.fileReady) this.afterReload();
     }).catch(err => console.log(err));

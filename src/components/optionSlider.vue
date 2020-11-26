@@ -2,9 +2,7 @@
   <li>
     <a>
       <span>{{ option.name }}</span>
-      <span
-        class="reset has-text-weight-light is-size-7"
-        @click="reset($event, option)"
+      <span class="reset has-text-weight-light is-size-7" @click="reset($event, option)"
         >reset</span
       >
       <b-slider
@@ -49,18 +47,21 @@ export default {
       const val = option.val;
       this.saveChange(option);
       setTimeout(() => {
-        this.$root.$emit("alterphoto", option.func, 0 - val);
+        this.emitAlterp(option.tech, option.func, 0 - val);
       }, 100);
       this.initval = 0;
       option.val = 0;
     },
     input(value, option) {
       console.log(value - this.initval);
-      this.$root.$emit("alterphoto", option.func, value - this.initval);
+      this.emitAlterp(option.tech, option.func, value - this.initval);
       option.val = value;
     },
     saveChange(option) {
       this.$root.$emit("savechange", option);
+    },
+    emitAlterp(tech, func, value) {
+      this.$root.$emit("alterphoto", tech, func, value);
     },
   },
 };

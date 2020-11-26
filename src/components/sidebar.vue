@@ -25,7 +25,7 @@
               v-for="option in Pfilters.checkboxes"
               :key="option.key"
               :option="option"
-              func="Pfilter"
+              func="filter"
             ></optionCheckBox>
           </b-menu-item>
           <b-menu-item animation="fade" label="Instagram filters">
@@ -33,7 +33,7 @@
               v-for="option in Ifilters.checkboxes"
               :key="option.key"
               :option="option"
-              func="Ifilter"
+              func="filter"
             ></optionCheckBox>
           </b-menu-item>
         </b-menu-list>
