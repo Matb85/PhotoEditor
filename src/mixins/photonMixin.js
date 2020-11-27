@@ -2,7 +2,7 @@ export default {
   data() {
     const workers = [];
     for (let i = 0; i < 3; i++) {
-      const worker = new Worker("../photonWorker.js", { type: "module" });
+      const worker = new Worker("@/photonWorker.js", { type: "module" });
       const send = message =>
         worker.postMessage({
           message,
