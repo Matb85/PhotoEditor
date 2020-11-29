@@ -11,12 +11,9 @@
     <template slot="end">
       <b-navbar-item tag="div">
         <div class="buttons">
-          <a
-            class="button is-primary"
-            href="https://silvia-odwyer.github.io/photon/"
-          >
+          <button @click="prepfordownload" v-show="$store.state.fileReady" class="button is-primary">
             <strong>Download</strong>
-          </a>
+          </button>
         </div>
       </b-navbar-item>
     </template>
@@ -24,8 +21,19 @@
 </template>
 
 <script lang="ts">
+import download from "@/components/download.vue";
 export default {
   name: "navbar",
+  methods: {
+    prepfordownload() {
+      console.log("preparing file...");
+      this.$buefy.modal.open({
+        parent: this,
+        component: download,
+        trapFocus: true,
+      });
+    },
+  },
 };
 </script>
 

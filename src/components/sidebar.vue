@@ -3,38 +3,14 @@
     <div class="px-1 py-5 mt-6">
       <b-menu :class="{ disabled: !$store.state.fileReady }">
         <b-menu-list>
-          <b-menu-item
-            animation="fade"
-            v-for="category in categories"
-            :key="category.key"
-            :label="category.name"
-          >
-            <optionSlider
-              v-for="option in category.sliders"
-              :key="option.key"
-              :option="option"
-            ></optionSlider>
-            <optionCheckBox
-              v-for="option in category.checkboxes"
-              :key="option.key"
-              :option="option"
-            ></optionCheckBox>
+          <b-menu-item animation="fade" expanded active label="Options">
+            <optionSlider v-for="option in options" :key="option.key" :option="option"></optionSlider>
           </b-menu-item>
-          <b-menu-item animation="fade" label="Photon filters">
-            <optionCheckBox
-              v-for="option in Pfilters.checkboxes"
-              :key="option.key"
-              :option="option"
-              func="filter"
-            ></optionCheckBox>
+          <b-menu-item animation="fade" label="Effects">
+            <optionSlider v-for="option in effects" :key="option.key" :option="option"></optionSlider>
           </b-menu-item>
-          <b-menu-item animation="fade" label="Instagram filters">
-            <optionCheckBox
-              v-for="option in Ifilters.checkboxes"
-              :key="option.key"
-              :option="option"
-              func="filter"
-            ></optionCheckBox>
+          <b-menu-item animation="fade" label="filters">
+            <optionCheckBox v-for="option in filters" :key="option.key" :option="option"></optionCheckBox>
           </b-menu-item>
         </b-menu-list>
       </b-menu>
@@ -54,9 +30,9 @@ export default {
 </script>
 
 <style lang="scss">
-.sidebar ::v-deep .menu-list li ul {
+.sidebar .menu-list li ul {
   margin-bottom: 0;
-  margin-top: 0;
+  margin-top: 0.25em;
 }
 .reset {
   position: absolute;

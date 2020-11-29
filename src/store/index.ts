@@ -5,48 +5,74 @@ Vue.use(Vuex);
 interface State {
   orginalsrc: string;
   fileReady: boolean;
-  history: object[];
+  curfilter: object;
+  curfiltername: string;
+  curset: object;
 }
-class Filterset {
-  opacity: number;
-  brightness: number;
-  saturate: number;
-  contrast: number;
-  hueRotate: number;
-  invert: number;
-  sepia: number;
-  grayscale: number;
-  constructor() {
-    this.opacity = 0;
-    this.brightness = 0;
-    this.saturate = 0;
-    this.contrast = 0;
-    this.hueRotate = 0;
-    this.invert = 0;
-    this.sepia = 0;
-    this.grayscale = 0;
-  }
+function init(f: any) {
+  return {
+    opacity: f.opacity || 0,
+    brightness: f.brightness || 0,
+    hueRotate: f.hueRotate || 0,
+    saturate: f.saturate || 0,
+    contrast: f.contrast || 0,
+    invert: f.invert || 0,
+    sepia: f.sepia || 0,
+    grayscale: f.grayscale || 0,
+  };
 }
 export default new Vuex.Store({
   state: {
-    orginalsrc: window.sessionStorage.orginalsrc || "",
-    fileReady: window.sessionStorage.fileReady ? true : false,
-    history: [],
-    curfilter: new Filterset(),
-    curset: new Filterset(),
+    orginalsrc: sessionStorage.orginalsrc || "",
+    fileReady: sessionStorage.fileReady ? true : false,
+    curfiltername: "default",
+    curfilter: sessionStorage.curfilter ? JSON.parse(sessionStorage.curfilter) : init({}),
+    curset: sessionStorage.curset ? JSON.parse(sessionStorage.curset) : init({ opacity: 100 }),
   } as State,
   mutations: {
     initImage(state, src) {
       state.orginalsrc = src;
       state.fileReady = true;
       //console.log(src);
-      window.sessionStorage.setItem("orginalsrc", src);
-      window.sessionStorage.setItem("fileReady", "true");
+      sessionStorage.setItem("orginalsrc", src);
+      sessionStorage.setItem("fileReady", "true");
     },
-    updateHistory(state, log) {
-      state.history.push(log);
+    applyfilter(state, filter) {
+      state.curfilter = filter;
+      sessionStorage.curfilter = JSON.stringify(filter);
+    },
+    updatesettings(state, newset) {
+      state.curset = newset;
+      sessionStorage.curset = JSON.stringify(newset);
     },
   },
-  actions: {},
+  actions: {
+    applyfilter(context, filter) {
+      const base: any = init(filter);
+      console.log(base);
+      context.commit("applyfilter", base);
+    },
+    updatesettings(context, { func, val }) {
+      const settings: any = Object.assign(context.state.curset);
+      settings[func] = val;
+      context.commit("updatesettings", settings);
+    },
+  },
+  getters: {
+    alleditsmerged(state) {
+      const f: any = state.curfilter;
+      const s: any = state.curset;
+      return `
+      brightness(${100 + f.brightness + s.brightness}%)
+      hue-rotate(${f.hueRotate + s.hueRotate}deg)
+      saturate(${100 + f.saturate + s.saturate}%)
+      contrast(${100 + f.contrast + s.contrast}%)
+      invert(${f.invert + s.invert}%)
+      sepia(${f.sepia + s.sepia}%)
+      grayscale(${f.grayscale + s.grayscale}%)
+      opacity(${f.opacity + s.opacity}%)
+      `;
+    },
+  },
   modules: {},
 });

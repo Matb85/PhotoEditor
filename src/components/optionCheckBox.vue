@@ -1,9 +1,9 @@
 <template>
   <li>
     <a>
-      <b-checkbox class="my-1" @input="input[func]($event, option)">
+      <b-radio class="my-1" v-model="$store.state.curfiltername" :native-value="option.name" @input="input">
         {{ option.name }}
-      </b-checkbox>
+      </b-radio>
     </a>
   </li>
 </template>
@@ -15,30 +15,13 @@ export default {
     option: {
       required: true,
     },
-    func: {
-      required: false,
-      default: "regular",
-    },
-  },
-  data() {
-    return {
-      input: {
-        regular: (value, option) => {
-          console.log(value);
-          this.emitAlterp(option.tech, option.func, value);
-          option.val = value;
-        },
-        filter: (value, option) => {
-          console.log(value);
-          this.emitAlterp(option.tech, "filter", value ? option.func : value);
-          option.val = value;
-        },
-      },
-    };
   },
   methods: {
-    emitAlterp(tech, func, value) {
-      this.$root.$emit("alterphoto", tech, func, value);
+    input() {
+      this.$store.dispatch("applyfilter", this.option.func);
+      this.$root.$emit("alterphoto");
+      console.log(this.$store.state.curfiltername);
+      console.log(this.option.func);
     },
   },
 };
