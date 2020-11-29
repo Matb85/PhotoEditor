@@ -39,6 +39,7 @@ export default {
         new Slider("invert", "invert", 1, 0, 100),
         new Slider("grayscale", "grayscale", 1, 0, 100),
         new Slider("sepia", "sepia", 1, 0, 100),
+        new Slider("blur", "blur", 1, 0, 50),
       ],
       filters: [
         new Option("default", {}),

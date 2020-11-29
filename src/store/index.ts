@@ -19,6 +19,7 @@ function init(f: any) {
     invert: f.invert || 0,
     sepia: f.sepia || 0,
     grayscale: f.grayscale || 0,
+    blur: f.blur || 0
   };
 }
 export default new Vuex.Store({
@@ -70,6 +71,7 @@ export default new Vuex.Store({
       invert(${f.invert + s.invert}%)
       sepia(${f.sepia + s.sepia}%)
       grayscale(${f.grayscale + s.grayscale}%)
+      blur(${f.blur + s.blur}px)
       opacity(${f.opacity + s.opacity}%)
       `;
     },

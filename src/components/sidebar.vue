@@ -1,7 +1,7 @@
 <template>
   <b-sidebar class="sidebar" position="absolute" type="is-white" fullheight open>
     <div class="px-1 py-5 mt-6">
-      <b-menu :class="{ disabled: !$store.state.fileReady }">
+      <b-menu :class="{ disabled: !$store.state.fileReady }" :accordion="false">
         <b-menu-list>
           <b-menu-item animation="fade" expanded active label="Options">
             <optionSlider v-for="option in options" :key="option.key" :option="option"></optionSlider>
@@ -31,7 +31,7 @@ export default {
 
 <style lang="scss">
 .sidebar .menu-list li ul {
-  margin-bottom: 0;
+  margin-bottom: 0.25em;
   margin-top: 0.25em;
 }
 .reset {

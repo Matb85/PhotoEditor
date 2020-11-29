@@ -1,6 +1,6 @@
 <template>
   <div class="photo-con">
-    <div id="pixiCon">
+    <div class="canvas-con">
       <canvas v-show="$store.state.fileReady" id="canvas" ref="canvas" width="630" height="420"></canvas>
     </div>
     <b-upload v-if="!$store.state.fileReady" @input="initimage($event)" accept=".jpg,.png" drag-drop>
@@ -73,7 +73,9 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-
+  .canvas-con {
+    overflow: hidden;
+  }
   canvas {
     width: 420px;
     height: 280px;
