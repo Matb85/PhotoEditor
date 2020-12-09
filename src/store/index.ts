@@ -8,6 +8,8 @@ interface State {
   curfilter: object;
   curfiltername: string;
   curset: object;
+  width: number;
+  height: number;
 }
 function init(f: any) {
   return {
@@ -19,25 +21,20 @@ function init(f: any) {
     invert: f.invert || 0,
     sepia: f.sepia || 0,
     grayscale: f.grayscale || 0,
-    blur: f.blur || 0
+    blur: f.blur || 0,
   };
 }
 export default new Vuex.Store({
   state: {
     orginalsrc: sessionStorage.orginalsrc || "",
+    width: sessionStorage.width,
+    height: sessionStorage.height,
     fileReady: sessionStorage.fileReady ? true : false,
     curfiltername: "default",
     curfilter: sessionStorage.curfilter ? JSON.parse(sessionStorage.curfilter) : init({}),
     curset: sessionStorage.curset ? JSON.parse(sessionStorage.curset) : init({ opacity: 100 }),
   } as State,
   mutations: {
-    initImage(state, src) {
-      state.orginalsrc = src;
-      state.fileReady = true;
-      //console.log(src);
-      sessionStorage.setItem("orginalsrc", src);
-      sessionStorage.setItem("fileReady", "true");
-    },
     applyfilter(state, filter) {
       state.curfilter = filter;
       sessionStorage.curfilter = JSON.stringify(filter);
@@ -58,8 +55,19 @@ export default new Vuex.Store({
       settings[func] = val;
       context.commit("updatesettings", settings);
     },
+    initImage({ state }, { src, width, height }) {
+      state.fileReady = true;
+      state.orginalsrc = src;
+      state.width = width;
+      state.height = height;
+      sessionStorage.setItem("width", width);
+      sessionStorage.setItem("height", height);
+      sessionStorage.setItem("fileReady", "true");
+      sessionStorage.setItem("orginalsrc", src);
+    },
   },
   getters: {
+    //all edits merged together
     alleditsmerged(state) {
       const f: any = state.curfilter;
       const s: any = state.curset;

@@ -1,6 +1,6 @@
 <template>
   <li>
-    <a>
+    <a style="position: relative;">
       <span>{{ option.name }}</span>
       <span class="reset has-text-weight-light is-size-7" @click="reset($event, option)">reset</span>
       <b-slider

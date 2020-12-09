@@ -1,9 +1,9 @@
 <template>
   <div class="photo-con">
     <div class="canvas-con">
-      <canvas v-show="$store.state.fileReady" id="canvas" ref="canvas" width="630" height="420"></canvas>
+      <canvas v-if="$store.state.fileReady" id="canvas" ref="canvas" :width="width" :height="height"></canvas>
     </div>
-    <b-upload v-if="!$store.state.fileReady" @input="initimage($event)" accept=".jpg,.png" drag-drop>
+    <b-upload v-if="!$store.state.fileReady" @input="initimage($event)" accept=".jpg,.jpeg,.png" drag-drop>
       <section class="section">
         <div class="content has-text-centered">
           <b-icon icon="upload" size="is-large"></b-icon>
@@ -15,36 +15,67 @@
 </template>
 
 <script>
+import croppermixin from "@/mixins/croppermixin.js";
 export default {
+  mixins: [croppermixin],
   name: "photo",
-  methods: {
-    async drawImage() {
-      this.ctx.putImageData(this.image, 0, 0);
+  data() {
+    return {
+      image: new Image(),
+      canvas: HTMLElement,
+      ctx: HTMLElement,
+    };
+  },
+  computed: {
+    width() {
+      return this.$store.state.width;
     },
+    height() {
+      return this.$store.state.height;
+    },
+  },
+  methods: {
     initimage(event) {
       const reader = new FileReader();
       reader.onload = () => {
-        console.log(reader.result);
-        const image = new Image();
-        image.src = reader.result;
-        image.onload = () => {
-          if (!this.$store.state.fileReady) {
-            this.$store.commit("initImage", reader.result);
-          }
-          this.ctx.drawImage(image, 0, 0, 630, 420);
-          this.image = this.ctx.getImageData(0, 0, 630, 420);
+        this.image.onload = () => {
+          this.$store
+            .dispatch("initImage", { src: reader.result, width: this.image.width, height: this.image.height })
+            .then(() => {
+              this.aftermounted();
+            });
         };
+        this.image.src = reader.result;
       };
       reader.readAsDataURL(event);
     },
+    aftermounted() {
+      this.canvas = this.$refs.canvas;
+      this.ctx = this.canvas.getContext("2d");
+      this.$root.$on("alterphoto", () => {
+        this.alterphoto();
+      });
+      this.$root.$on("cropperchange", (func, args) => {
+        this.cropperchange(func, args);
+      });
+      this.afterReload();
+    },
     afterReload() {
       const src = this.$store.state.orginalsrc;
-      const image = new Image();
-      image.src = src;
-      image.onload = () => {
-        this.ctx.drawImage(image, 0, 0, 630, 420);
-        this.image = this.ctx.getImageData(0, 0, 630, 420);
+      this.image.src = src;
+      this.image.onload = () => {
+        this.ctx.drawImage(this.image, 0, 0, this.width, this.height);
         this.alterphoto();
+        if (sessionStorage.croppperData) {
+          this.cropperchange("init", []);
+          this.canvas.addEventListener(
+            "ready",
+            () => {
+              this.cropperchange("customdestroy", []);
+            },
+            { once: true }
+          );
+        }
       };
     },
     alterphoto() {
@@ -52,33 +83,39 @@ export default {
     },
   },
   mounted() {
-    this.canvas = this.$refs.canvas;
-    this.ctx = this.canvas.getContext("2d");
-
-    this.$root.$on("alterphoto", () => {
-      this.alterphoto();
-    });
-    if (this.$store.state.fileReady) this.afterReload();
+    if (this.$store.state.fileReady) this.aftermounted();
   },
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
 .photo-con {
   position: absolute;
   right: 0;
   bottom: 0;
   width: calc(100% - 260px);
-  height: 100%;
+  height: calc(100% - 3.5rem);
   display: flex;
   justify-content: center;
   align-items: center;
-  .canvas-con {
-    overflow: hidden;
-  }
   canvas {
-    width: 420px;
-    height: 280px;
+    background-color: black;
+    max-width: calc(100vw - 260px - 2rem);
+    max-height: calc(100vh - 5.5rem);
+    display: block;
+  }
+}
+@media (max-width: 650px) {
+  .photo-con {
+    width: 100%;
+    height: 60%;
+    top: 3.5em;
+    canvas {
+      background-color: black;
+      max-width: calc(100vw - 0.5rem);
+      max-height: calc(60vh - 2rem);
+      display: block;
+    }
   }
 }
 </style>
