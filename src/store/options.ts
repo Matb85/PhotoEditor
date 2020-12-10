@@ -1,3 +1,8 @@
+interface Mixin {
+  $store: any,
+  data: any,
+}
+
 let id = 0;
 class Option {
   id: number;
@@ -12,7 +17,7 @@ class Option {
 }
 
 export default {
-  data(): any {
+  data() {
     const curset = this.$store.state.curset;
     class Slider extends Option {
       step: number;
@@ -93,4 +98,4 @@ export default {
       ],
     };
   },
-};
+} as Mixin;

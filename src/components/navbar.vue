@@ -20,7 +20,7 @@
   </b-navbar>
 </template>
 
-<script lang="ts">
+<script>
 import download from "@/components/download.vue";
 export default {
   name: "navbar",

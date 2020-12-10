@@ -80,7 +80,7 @@ export default {
         justify-content: center;
         align-items: center;
         flex-wrap: wrap;
-        >li > ul {
+        > li > ul {
           width: 100%;
           max-height: calc(40vh - 8rem);
           overflow-x: scroll;
