@@ -1,7 +1,7 @@
 <template>
   <div class="section container" style="margin-top: 2rem;">
-    <h1 class="title is-2">Image Editor</h1>
-    <h2 class="subtitle is-4">A fully functional online Image Editor</h2>
+    <h1 class="title is-2">Photo Editor</h1>
+    <h2 class="subtitle is-4">A fully functional free online Photo Editor</h2>
     <hr />
     <figure class="image 16/9" style="width: 100%; max-width: 300px; margin: 0 auto">
       <img :src="`${publicPath}img/logo.svg`" />
@@ -9,8 +9,9 @@
     <article class="content pb-5">
       <h3 class="title is-3 mb-1">What's that?</h3>
       <p>
-        Image Editor can be considered as a showcase of various tech. It is a Vue SPA and utilizes canvas filters and
-        cropperjs. Nevertheless, in fact, it is a fun after-work project!
+        Photo Editor can be considered as a showcase of various tech. It is a Vue SPA utilizing
+        <a href="https://buefy.org/">Buefy</a>, canvas filters and
+        <a href="https://github.com/fengyuanchen/cropperjs">Cropperjs</a>. All in all, it's a fun hobby project!
       </p>
 
       <h3 class="title is-3 mb-1">Usage</h3>
@@ -19,8 +20,9 @@
       </p>
       <ul>
         <li>
-          applying canvas filters (same as css filters: brightness, saturation, hue rotate, contrast, opacity,
-          grayscale, sepia, invert)
+          applying
+          <a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/filter">canvas filters</a>
+          (same as css filters: brightness, saturation, hue rotate, contrast, opacity, grayscale, sepia, invert)
         </li>
         <li>
           applying instagram filters thanks to <a href="https://github.com/picturepan2/instagram.css">Instagram.css</a>

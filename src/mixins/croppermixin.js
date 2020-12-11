@@ -2,6 +2,7 @@ import Cropper from "cropperjs";
 export default {
   data() {
     return {
+      iscropperopen: false,
       cropper: {},
       cropperData: sessionStorage.croppperData ? JSON.parse(sessionStorage.croppperData) : {},
     };
@@ -16,18 +17,20 @@ export default {
       this.drawImage({ width: this.width, height: this.height }, this.image);
       this.cropper = new Cropper(this.canvas, {
         initialAspectRatio: this.width / this.height,
-        autoCropArea: 0.8,
+        autoCropArea: 1,
         dragMode: "move",
         movable: false,
         zoomable: false,
         data: this.cropperData,
       });
+      this.iscropperopen = true;
       this.cropper.customdestroy = () => {
         this.cropperData = this.cropper.getData();
         sessionStorage.setItem("croppperData", JSON.stringify(this.cropperData));
         this.drawImage(this.cropperData, this.cropper.getCroppedCanvas({ fillColor: "#fff" }));
         this.cropper.destroy();
         this.cropper.init = this.initcropper;
+        this.iscropperopen = false;
       };
     },
     cropperchange(func, args) {

@@ -1,6 +1,6 @@
 <template>
   <div class="photo-con">
-    <div class="canvas-con">
+    <div class="canvas-con" :style="{ overflow: !iscropperopen ? 'hidden' : 'initial' }">
       <canvas v-if="$store.state.fileReady" id="canvas" ref="canvas" :width="width" :height="height"></canvas>
     </div>
     <b-upload v-if="!$store.state.fileReady" @input="initimage($event)" accept=".jpg,.jpeg,.png" drag-drop>
@@ -22,8 +22,8 @@ export default {
   data() {
     return {
       image: new Image(),
-      canvas: HTMLElement,
-      ctx: HTMLElement,
+      canvas: {},
+      ctx: {},
     };
   },
   computed: {

@@ -1,7 +1,7 @@
 <template>
   <b-navbar shadow id="navbar">
     <template slot="brand">
-      <h1 class="is-size-3 mx-2">Image editor</h1>
+      <h1 class="is-size-3 mx-2">Photo editor</h1>
     </template>
     <template slot="start">
       <b-navbar-item tag="router-link" to="/about">About</b-navbar-item>
