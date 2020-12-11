@@ -7,7 +7,7 @@ module.exports = {
   chainWebpack: config => {
     config.plugin("html").tap(args => {
       args[0].title = "Image Editor";
-      args[0].description = "Image Editor description";
+      args[0].description = "A fully functional online Image Editor";
       return args;
     });
   },

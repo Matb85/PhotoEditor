@@ -39,7 +39,8 @@ export default {
 
 <style lang="scss">
 #navbar {
-  position: absolute;
+  position: fixed;
+  top: 0;
   z-index: 40;
   width: 100%;
 }
