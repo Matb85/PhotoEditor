@@ -2,6 +2,7 @@ const WorkerPlugin = require("worker-plugin");
 const NAME = "Photo Editor";
 
 module.exports = {
+  publicPath: process.env.NODE_ENV === "production" ? "/PhotoEditor/" : "/",
   configureWebpack: {
     plugins: [new WorkerPlugin()],
   },
