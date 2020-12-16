@@ -29,19 +29,15 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: "download",
-  data() {
-    return {
-      format: "jpeg",
-      quality: 75,
-    };
-  },
-  methods: {
-    download() {
-      this.$root.$emit("download", this.format, this.quality);
-    },
-  },
-};
+<script lang="ts">
+import { Vue, Component } from "vue-property-decorator";
+@Component
+export default class Download extends Vue {
+  format = "jpeg";
+  quality = 75;
+
+  download() {
+    this.$root.$emit("download", this.format, this.quality);
+  }
+}
 </script>

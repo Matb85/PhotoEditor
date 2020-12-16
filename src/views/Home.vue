@@ -5,9 +5,9 @@
   </div>
 </template>
 
-<script>
-import sidebar from "@/components/sidebar.vue";
-import photo from "@/components/photo.vue";
+<script lang="ts">
+import sidebar from "@/components/sidebar/sidebar.vue";
+import photo from "@/components/photo/photo.vue";
 export default {
   name: "Home",
   components: {

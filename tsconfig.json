@@ -1,5 +1,8 @@
 {
   "compilerOptions": {
+    "noImplicitAny": true,
+    "strictPropertyInitialization": false,
+    //
     "target": "es5",
     "module": "esnext",
     "strict": true,
@@ -12,29 +15,20 @@
     "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "baseUrl": ".",
-    "types": [
-      "webpack-env"
-    ],
+    "types": ["webpack-env"],
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@/*": ["src/*"]
     },
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost"
-    ]
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
   },
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
     "tests/**/*.ts",
-    "tests/**/*.tsx", "src/mixins/categories.ts", "src/WebWorker/worker.js", "src/WebWorker/index.js", "src/photonWorker.js"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+    "tests/**/*.tsx",
+    "src/mixins/categories.ts",
+    "src/components/photo/croppermixin.ts"
+, "src/workers/service-worker.js"  ],
+  "exclude": ["node_modules"]
 }

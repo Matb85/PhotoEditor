@@ -19,24 +19,23 @@
   </b-sidebar>
 </template>
 
-<script>
-import categories from "@/store/options.ts";
-import optionSlider from "@/components/optionSlider.vue";
-import optionCheckBox from "@/components/optionCheckBox.vue";
-import cropperOptions from "@/components/cropperOptions.vue";
-export default {
-  mixins: [categories],
+<script lang="ts">
+import { Mixins, Component, Watch } from "vue-property-decorator";
+
+import Options from "@/store/options.ts";
+import optionSlider from "./optionSlider.vue";
+import optionCheckBox from "./optionCheckBox.vue";
+import cropperOptions from "./cropperOptions.vue";
+
+@Component({
   components: { optionSlider, optionCheckBox, cropperOptions },
-  name: "sidebar",
-  data() {
-    return { crop: false };
-  },
-  watch: {
-    crop(newval) {
-      this.$root.$emit("cropperchange", newval ? "init" : "customdestroy", []);
-    },
-  },
-};
+})
+export default class Sidebar extends Mixins(Options) {
+  crop = false;
+  @Watch("crop") cropWatcher(newval: boolean) {
+    this.$root.$emit("cropperchange", newval ? "init" : "customdestroy", []);
+  }
+}
 </script>
 
 <style lang="scss">

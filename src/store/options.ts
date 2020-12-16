@@ -1,10 +1,19 @@
-interface Mixin {
-  $store: any,
-  data: any,
+import { Component, Vue } from "vue-property-decorator";
+
+export interface OptionInterface {
+  id: number;
+  name: string;
+  func: string | object;
+}
+export interface SliderInterface extends OptionInterface {
+  step: number;
+  min: number;
+  max: number;
+  val: number;
 }
 
 let id = 0;
-class Option {
+class Option implements OptionInterface {
   id: number;
   name: string;
   func: string | object;
@@ -16,10 +25,11 @@ class Option {
   }
 }
 
-export default {
+@Component
+export default class Options extends Vue {
   data() {
     const curset = this.$store.state.curset;
-    class Slider extends Option {
+    class Slider extends Option implements SliderInterface {
       step: number;
       min: number;
       max: number;
@@ -97,5 +107,5 @@ export default {
         new Option("x-pro II", { sepia: 45, contrast: 25, brightness: 75, saturate: 30, hueRotate: -5 }),
       ],
     };
-  },
-} as Mixin;
+  }
+};

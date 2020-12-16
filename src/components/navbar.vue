@@ -20,21 +20,20 @@
   </b-navbar>
 </template>
 
-<script>
+<script lang="ts">
+import { Vue, Component } from "vue-property-decorator";
 import download from "@/components/download.vue";
-export default {
-  name: "navbar",
-  methods: {
-    prepfordownload() {
-      console.log("preparing file...");
-      this.$buefy.modal.open({
-        parent: this,
-        component: download,
-        trapFocus: true,
-      });
-    },
-  },
-};
+
+@Component
+export default class Navbar extends Vue {
+  prepfordownload() {
+    this.$buefy.modal.open({
+      parent: this,
+      component: download,
+      trapFocus: true,
+    });
+  }
+}
 </script>
 
 <style lang="scss">

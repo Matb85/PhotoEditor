@@ -74,18 +74,23 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { Vue, Component, Watch } from "vue-property-decorator";
+
 let id = 0;
 class AspectRatiosBtn {
-  constructor(name, val) {
+  id: number;
+  name: string;
+  val: number | string;
+  constructor(name: string, val: number | string) {
     this.id = id;
     this.name = name;
     this.val = val;
     id++;
   }
 }
-export default {
-  name: "cropperOptions",
+
+@Component({
   data() {
     const anitialAR = this.$store.state.width / this.$store.state.height;
     return {
@@ -106,28 +111,35 @@ export default {
       flipv: false,
     };
   },
-  methods: {
-    reset() {
-      this.$root.$emit("cropperchange", "reset", []);
-    },
-    flip(axis) {
-      this["flip" + axis] = !this["flip" + axis];
-      this.$root.$emit("cropperchange", "scale" + axis, [this["flip" + axis] ? -1 : 1]);
-    },
-  },
-  watch: {
-    curAspectRatio(newval) {
-      this.$root.$emit("cropperchange", "setAspectRatio", [newval]);
-    },
-    rotation(newval) {
-      this.$root.$emit("cropperchange", "rotateTo", [newval + this.additionalrot]);
-    },
-    additionalrot() {
-      if (this.additionalrot >= 360) this.additionalrot -= 360;
-      this.$root.$emit("cropperchange", "rotateTo", [this.rotation + this.additionalrot]);
-    },
-  },
-};
+})
+export default class CropperOptions extends Vue {
+  anitialAR: number;
+  curAspectRatio: number;
+  aspectRatiosBtns: Array<object>;
+  rotation: number;
+  additionalrot: number;
+  flipX: boolean;
+  flipY: boolean;
+
+  @Watch("curAspectRatio") curAspectRatioWatcher(newval: number) {
+    this.$root.$emit("cropperchange", "setAspectRatio", [newval]);
+  }
+  @Watch("rotation") rotationWatcher(newval: number) {
+    this.$root.$emit("cropperchange", "rotateTo", [newval + this.additionalrot]);
+  }
+  @Watch("additionalrot") additionalrotWatcher() {
+    if (this.additionalrot >= 360) this.additionalrot -= 360;
+    this.$root.$emit("cropperchange", "rotateTo", [this.rotation + this.additionalrot]);
+  }
+  reset() {
+    this.$root.$emit("cropperchange", "reset", []);
+  }
+  flip(axis: string) {
+    const flipAxis = ("flip" + axis) as "flipX" | "flipY";
+    this[flipAxis] = !this[flipAxis];
+    this.$root.$emit("cropperchange", "scale" + axis, [this[flipAxis] ? -1 : 1]);
+  }
+}
 </script>
 
 <style lang="scss" scoped>
