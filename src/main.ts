@@ -1,15 +1,15 @@
-import Vue from "vue";
-import App from "./App.vue";
-import "./registerServiceWorker";
-import router from "./router";
-import store from "./store";
-import Buefy from 'buefy';
-import "./assets/style.scss";
-Vue.config.productionTip = false;
-Vue.use(Buefy);
+import photoEditor from "./components/photoEditor.vue";
 
-new Vue({
-  router,
-  store,
-  render: h => h(App)
-}).$mount("#app");
+export { photoEditor };
+
+// What should happen if the user installs the library as a plugin
+function install(Vue: any, {store}: {store: any}) {
+  Vue.component("photoEditor", photoEditor);
+}
+
+// Export the library as a plugin
+export default install;
+
+if (typeof window !== 'undefined' && window.Vue) {
+  window.Vue.use(install)
+}

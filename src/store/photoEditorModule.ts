@@ -1,6 +1,4 @@
-import Vue from "vue";
-import Vuex from "vuex";
-Vue.use(Vuex);
+import { Module } from "vuex";
 
 interface State {
   orginalsrc: string;
@@ -24,7 +22,9 @@ function init(f: any) {
     blur: f.blur || 0,
   };
 }
-export default new Vuex.Store({
+
+export default {
+  namespaced: true,
   state: {
     orginalsrc: sessionStorage.orginalsrc || "",
     width: sessionStorage.width,
@@ -33,7 +33,7 @@ export default new Vuex.Store({
     curfiltername: "default",
     curfilter: sessionStorage.curfilter ? JSON.parse(sessionStorage.curfilter) : init({}),
     curset: sessionStorage.curset ? JSON.parse(sessionStorage.curset) : init({ opacity: 100 }),
-  } as State,
+  },
   mutations: {
     applyfilter(state, filter) {
       state.curfilter = filter;
@@ -42,6 +42,20 @@ export default new Vuex.Store({
     updatesettings(state, newset) {
       state.curset = newset;
       sessionStorage.curset = JSON.stringify(newset);
+    },
+    resetStore(state) {
+      Object.assign(state, {
+        orginalsrc: "",
+        width: null,
+        height: null,
+        fileReady: false,
+        curfiltername: "default",
+        curfilter: init({}),
+        curset: init({ opacity: 100 }),
+      });
+      for (const i in state) {
+        sessionStorage.removeItem(i);
+      }
     },
   },
   actions: {
@@ -85,4 +99,4 @@ export default new Vuex.Store({
     },
   },
   modules: {},
-});
+} as Module<State, State>;

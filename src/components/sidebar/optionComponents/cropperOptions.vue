@@ -92,7 +92,7 @@ class AspectRatiosBtn {
 
 @Component({
   data() {
-    const anitialAR = this.$store.state.width / this.$store.state.height;
+    const anitialAR = this.$store.state.photoEditor.width / this.$store.state.photoEditor.height;
     return {
       anitialAR,
       curAspectRatio: anitialAR,
@@ -122,17 +122,17 @@ export default class CropperOptions extends Vue {
   flipY: boolean;
 
   @Watch("curAspectRatio") curAspectRatioWatcher(newval: number) {
-    this.$root.$emit("cropperchange", "setAspectRatio", [newval]);
+    this.$root.$emit("photoEditor/cropperchange", "setAspectRatio", [newval]);
   }
   @Watch("rotation") rotationWatcher(newval: number) {
-    this.$root.$emit("cropperchange", "rotateTo", [newval + this.additionalrot]);
+    this.$root.$emit("photoEditor/cropperchange", "rotateTo", [newval + this.additionalrot]);
   }
   @Watch("additionalrot") additionalrotWatcher() {
     if (this.additionalrot >= 360) this.additionalrot -= 360;
-    this.$root.$emit("cropperchange", "rotateTo", [this.rotation + this.additionalrot]);
+    this.$root.$emit("photoEditor/cropperchange", "rotateTo", [this.rotation + this.additionalrot]);
   }
   reset() {
-    this.$root.$emit("cropperchange", "reset", []);
+    this.$root.$emit("photoEditor/cropperchange", "reset", []);
   }
   flip(axis: string) {
     const flipAxis = ("flip" + axis) as "flipX" | "flipY";

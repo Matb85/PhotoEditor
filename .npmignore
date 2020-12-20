@@ -1,0 +1,11 @@
+docs/
+devdocs/
+src/
+public/
+node_modules/
+.git/
+
+.eslintrc.js
+.browserslistrc
+vue.config.js
+tsconfig.json

@@ -1,6 +1,6 @@
 <template>
   <b-sidebar id="sidebar" position="absolute" type="is-white" fullheight open>
-    <b-menu :class="{ disabled: !$store.state.fileReady }">
+    <b-menu :class="{ disabled: !$store.state.photoEditor.fileReady }">
       <b-menu-list>
         <b-menu-item animation="none" :expanded.sync="crop" :active.sync="crop" label="Crop & rotate">
           <cropperOptions />
@@ -22,10 +22,10 @@
 <script lang="ts">
 import { Mixins, Component, Watch } from "vue-property-decorator";
 
-import Options from "@/store/options.ts";
-import optionSlider from "./optionSlider.vue";
-import optionCheckBox from "./optionCheckBox.vue";
-import cropperOptions from "./cropperOptions.vue";
+import Options from "./options";
+import optionSlider from "./optionComponents/optionSlider.vue";
+import optionCheckBox from "./optionComponents/optionCheckBox.vue";
+import cropperOptions from "./optionComponents/cropperOptions.vue";
 
 @Component({
   components: { optionSlider, optionCheckBox, cropperOptions },
@@ -33,19 +33,28 @@ import cropperOptions from "./cropperOptions.vue";
 export default class Sidebar extends Mixins(Options) {
   crop = false;
   @Watch("crop") cropWatcher(newval: boolean) {
-    this.$root.$emit("cropperchange", newval ? "init" : "customdestroy", []);
+    this.$root.$emit("photoEditor/cropperchange", newval ? "init" : "customdestroy", []);
   }
 }
 </script>
 
-<style lang="scss">
-#sidebar.b-sidebar {
+<style lang="scss" scoped>
+#sidebar.b-sidebar ::v-deep {
   .menu-list li ul {
     margin-bottom: 0.25em;
     margin-top: 0.25em;
   }
   .sidebar-content.is-absolute {
-    padding: 4rem 0.25rem 0 0.25rem;
+    padding: 1rem 0.25rem 0 0.25rem;
+    box-shadow: 2px 0px 4px rgba(#000, 0.25);
+
+    .reset {
+      position: absolute !important;
+      right: 0;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
 }
 .disabled {
@@ -54,7 +63,7 @@ export default class Sidebar extends Mixins(Options) {
   opacity: 0.5;
 }
 @media (max-width: 650px) {
-  #sidebar.b-sidebar {
+  #sidebar.b-sidebar ::v-deep {
     position: absolute;
     width: 100%;
     min-height: 4rem;
@@ -68,6 +77,9 @@ export default class Sidebar extends Mixins(Options) {
       padding: 0.25em 0.5rem;
       display: flex;
       justify-content: center;
+      .reset {
+        margin-right: 0.5rem;
+      }
       .menu,
       .menu-list {
         width: 100%;

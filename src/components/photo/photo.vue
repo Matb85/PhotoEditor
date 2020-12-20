@@ -1,9 +1,15 @@
 <template>
   <div class="photo-con">
     <div class="canvas-con" :style="{ overflow: !iscropperopen ? 'hidden' : 'initial' }">
-      <canvas v-if="$store.state.fileReady" id="canvas" ref="canvas" :width="width" :height="height"></canvas>
+      <canvas
+        v-if="$store.state.photoEditor.fileReady"
+        id="canvas"
+        ref="canvas"
+        :width="width"
+        :height="height"
+      ></canvas>
     </div>
-    <b-upload v-if="!$store.state.fileReady" @input="initimage($event)" accept=".jpg,.jpeg,.png" drag-drop>
+    <b-upload v-if="!$store.state.photoEditor.fileReady" @input="initimage($event)" accept=".jpg,.jpeg,.png" drag-drop>
       <section class="section">
         <div class="content has-text-centered">
           <b-icon icon="upload" size="is-large"></b-icon>
@@ -22,12 +28,11 @@ import CropperSetup, { CropperProps } from "./cropperSetup";
 @Component
 export default class Photo extends Mixins(CropperSetup) {
   image = new Image();
-
   get width() {
-    return this.$store.state.width;
+    return this.$store.state.photoEditor.width;
   }
   get height() {
-    return this.$store.state.height;
+    return this.$store.state.photoEditor.height;
   }
 
   initimage(event: Blob) {
@@ -35,7 +40,11 @@ export default class Photo extends Mixins(CropperSetup) {
     reader.onload = () => {
       this.image.onload = () => {
         this.$store
-          .dispatch("initImage", { src: reader.result, width: this.image.width, height: this.image.height })
+          .dispatch("photoEditor/initImage", {
+            src: reader.result,
+            width: this.image.width,
+            height: this.image.height,
+          })
           .then(() => {
             this.aftermounted();
           });
@@ -47,16 +56,16 @@ export default class Photo extends Mixins(CropperSetup) {
   aftermounted() {
     this.canvas = this.$refs.canvas;
     this.ctx = this.canvas.getContext("2d") as CanvasRenderingContext2D;
-    this.$root.$on("alterphoto", () => {
+    this.$root.$on("photoEditor/alterphoto", () => {
       this.alterphoto();
     });
-    this.$root.$on("cropperchange", (func: CropperProps, args: Array<string>) => {
+    this.$root.$on("photoEditor/cropperchange", (func: CropperProps, args: Array<string>) => {
       this.cropperchange(func, args);
     });
     this.afterReload();
   }
   afterReload() {
-    this.image.src = this.$store.state.orginalsrc;
+    this.image.src = this.$store.state.photoEditor.orginalsrc;
     this.image.onload = () => {
       this.ctx.drawImage(this.image, 0, 0, this.width, this.height);
       this.alterphoto();
@@ -73,10 +82,10 @@ export default class Photo extends Mixins(CropperSetup) {
     };
   }
   alterphoto() {
-    this.canvas.style.filter = this.$store.getters.alleditsmerged;
+    this.canvas.style.filter = this.$store.getters["photoEditor/alleditsmerged"];
   }
   mounted() {
-    if (this.$store.state.fileReady) this.aftermounted();
+    if (this.$store.state.photoEditor.fileReady) this.aftermounted();
   }
 }
 </script>
@@ -87,7 +96,7 @@ export default class Photo extends Mixins(CropperSetup) {
   right: 0;
   bottom: 0;
   width: calc(100% - 260px);
-  height: calc(100% - 3.5rem);
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;

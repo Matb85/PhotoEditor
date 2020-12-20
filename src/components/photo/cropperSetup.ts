@@ -1,5 +1,6 @@
 import { Component, Vue } from "vue-property-decorator";
 import Cropper from "cropperjs";
+import "cropperjs/dist/cropper.min.css";
 
 type CropperType = {
   //used methods / properties
@@ -24,7 +25,7 @@ export default class CropperSetup extends Vue {
   height: number;
   cropper = {} as CropperType;
   iscropperopen = false;
-  cropperData = sessionStorage.croppperData ? JSON.parse(sessionStorage.croppperData) : {};
+  cropperData = sessionStorage.cropperData ? JSON.parse(sessionStorage.cropperData) : {};
 
   drawImage({ width, height }: { width: number; height: number }, canvas: HTMLCanvasElement | HTMLImageElement) {
     this.canvas.width = width;
@@ -44,7 +45,7 @@ export default class CropperSetup extends Vue {
     this.iscropperopen = true;
     this.cropper.customdestroy = () => {
       this.cropperData = this.cropper.getData();
-      sessionStorage.setItem("croppperData", JSON.stringify(this.cropperData));
+      sessionStorage.setItem("cropperData", JSON.stringify(this.cropperData));
       this.drawImage(this.cropperData, this.cropper.getCroppedCanvas({ fillColor: "#fff" }));
       this.cropper.destroy();
       this.cropper.init = this.initcropper;
@@ -59,7 +60,7 @@ export default class CropperSetup extends Vue {
     const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
     canvas.width = this.canvas.width;
     canvas.height = this.canvas.height;
-    ctx.filter = this.$store.getters.alleditsmerged;
+    ctx.filter = this.$store.getters["photoEditor/alleditsmerged"];
     ctx.drawImage(this.canvas, 0, 0);
     const readyimg = canvas.toDataURL("image/" + format, quality / 100);
     const a = document.createElement("a");

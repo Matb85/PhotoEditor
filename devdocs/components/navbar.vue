@@ -22,7 +22,7 @@
 
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
-import download from "@/components/download.vue";
+import download from "./download.vue";
 
 @Component
 export default class Navbar extends Vue {

@@ -22,13 +22,14 @@
     "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
   },
   "include": [
+    "devdocs/**/*.ts",
+    "devdocs/**/*.vue",
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
     "tests/**/*.ts",
     "tests/**/*.tsx",
-    "src/mixins/categories.ts",
-    "src/components/photo/croppermixin.ts"
-, "src/workers/service-worker.js"  ],
+    "src/workers/service-worker.js"
+  ],
   "exclude": ["node_modules"]
 }

@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from "vue-property-decorator";
-import { SliderInterface } from "@/store/options";
+import { SliderInterface } from "../options";
 
 @Component
 export default class OptionSlider extends Vue {
@@ -28,8 +28,8 @@ export default class OptionSlider extends Vue {
   }
   @Watch("val")
   valWatcher(newval: number) {
-    this.$store.dispatch("updatesettings", { func: this.option.func, val: newval });
-    this.$root.$emit("alterphoto");
+    this.$store.dispatch("photoEditor/updatesettings", { func: this.option.func, val: newval });
+    this.$root.$emit("photoEditor/alterphoto");
   }
 
   reset() {

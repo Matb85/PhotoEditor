@@ -28,7 +28,7 @@ class Option implements OptionInterface {
 @Component
 export default class Options extends Vue {
   data() {
-    const curset = this.$store.state.curset;
+    const curset = this.$store.state.photoEditor.curset;
     class Slider extends Option implements SliderInterface {
       step: number;
       min: number;

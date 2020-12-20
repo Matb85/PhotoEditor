@@ -1,25 +1,49 @@
 {
   "name": "photo_editor",
-  "version": "0.1.0",
+  "version": "1.0.0-beta",
   "private": true,
   "license": "Apache-2.0",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "serve": "vue-cli-service serve ./devdocs/main.ts",
+    "build:docs": "vue-cli-service build --dest ./docs ./devdocs/main.ts",
+    "build:lib": "vue-cli-service build --target lib --name photoEditor --skip-plugins @vue/cli-plugin-pwa,worker-plugin,html-webpack-plugin ./src/main.ts",
     "lint": "vue-cli-service lint"
   },
+  "description": "A fully functional Photo Editor made with Vuejs",
+  "author": "matb85",
+  "keywords": [
+    "photo-editor",
+    "photo_editor",
+    "image-editor",
+    "image_editor",
+    "instagram.css",
+    "cropperjs",
+    "bulma",
+    "buefy",
+    "vue",
+    "vuejs",
+    "vue-bulma",
+    "components"
+  ],
+  "homepage": "https://matb85.github.io/PhotoEditor/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/matb85/photoEditor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/matb85/photoEditor/issues"
+  },
+  "main": "dist/photoEditor.umd.min.js",
+  "files": [
+    "/dist"
+  ],
   "dependencies": {
-    "@silvia-odwyer/photon": "^0.2.0",
-    "buefy": "^0.9.4",
     "cropperjs": "^1.5.9",
-    "pixi.js": "^5.3.3",
-    "pixi.js-legacy": "^5.3.3",
-    "register-service-worker": "^1.7.1",
-    "vue": "^2.6.11",
-    "vue-class-component": "^7.2.3",
-    "vue-property-decorator": "^8.4.2",
-    "vue-router": "^3.2.0",
-    "vuex": "^3.4.0"
+    "buefy": "^0.9.4"
+  },
+  "peerDependencies": {
+    "vuex": "^3.4.0",
+    "vue": "^2.6.11"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.33.0",
@@ -40,6 +64,12 @@
     "sass-loader": "^8.0.2",
     "typescript": "~3.9.3",
     "vue-template-compiler": "^2.6.11",
-    "worker-plugin": "^5.0.0"
+    "worker-plugin": "^5.0.0",
+    "register-service-worker": "^1.7.1",
+    "vue-class-component": "^7.2.3",
+    "vue-property-decorator": "^8.4.2",
+    "vue-router": "^3.2.0",
+    "vuex": "^3.4.0",
+    "vue": "^2.6.11"
   }
 }
