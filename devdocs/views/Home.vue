@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { photoEditor } from "@/main";
+import photoEditor from "@/main";
 
 export default {
   name: "Home",

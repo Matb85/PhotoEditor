@@ -61,7 +61,6 @@ export default {
   actions: {
     applyfilter(context, filter) {
       const base: any = init(filter);
-      console.log(base);
       context.commit("applyfilter", base);
     },
     updatesettings(context, { func, val }) {
