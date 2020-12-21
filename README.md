@@ -24,7 +24,7 @@ Go to https://matb85.github.io/PhotoEditor/ Just upload a photo a start tweaking
 
 Of course you can download the editor via npm as a commonjs or umd module. Please remember that photoEditor requires Vuex!
 
-- in vue:
+- in a no ssr environment (e.g. Vue spa):
 
 ```html
 <template>
@@ -34,7 +34,8 @@ Of course you can download the editor via npm as a commonjs or umd module. Pleas
 </template>
 
 <script>
-  import photoEditor from "@/main/photoEditor.umd.js";
+  import "@matb85/photoeditor/dist/photoEditor.css";
+  import photoEditor from "@matb85/photoeditor";
 
   export default {
     name: "Home",
@@ -45,7 +46,7 @@ Of course you can download the editor via npm as a commonjs or umd module. Pleas
 </script>
 ```
 
-- in nuxt:
+- in a ssr environment (e.g. Nuxt universal app):
 
 ```html
 <template>
@@ -57,13 +58,12 @@ Of course you can download the editor via npm as a commonjs or umd module. Pleas
 </template>
 
 <script>
-  import "photoeditor/photoEditor.css";
+  import "@matb85/photoeditor/dist/photoEditor.css"
   export default {
     name: "your component",
-    components: {
+    components:
       photoEditor: () => {
-        return import("photoeditor/photoEditor.umd.js").then(result => {
-          return result.photoEditor;
+      return import("@matb85/photoeditor")
         });
       },
     },

@@ -1,13 +1,14 @@
 {
   "name": "@matb85/photoeditor",
-  "version": "1.1.0",
+  "version": "1.1.5",
   "private": false,
   "license": "Apache-2.0",
   "scripts": {
     "serve": "vue-cli-service serve ./devdocs/main.ts",
     "build:docs": "vue-cli-service build --dest ./docs ./devdocs/main.ts",
     "build:lib": "vue-cli-service build --target lib --name photoEditor --skip-plugins @vue/cli-plugin-pwa,worker-plugin,html-webpack-plugin ./src/main.ts",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "publish:gitnpm": "git push origin master && npm publish --access public"
   },
   "description": "A fully functional Photo Editor made with Vuejs",
   "author": "matb85",
@@ -35,7 +36,7 @@
   },
   "main": "dist/photoEditor.umd.min.js",
   "files": [
-    "/dist"
+    "dist/*"
   ],
   "dependencies": {
     "cropperjs": "^1.5.9"
