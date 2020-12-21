@@ -5,6 +5,8 @@ public/
 node_modules/
 .git/
 
+dist/demo.html
+
 .eslintrc.js
 .browserslistrc
 vue.config.js

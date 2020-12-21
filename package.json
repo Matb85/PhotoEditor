@@ -1,7 +1,7 @@
 {
-  "name": "photo_editor",
-  "version": "1.0.0-beta",
-  "private": true,
+  "name": "@matb85/photoeditor",
+  "version": "1.1.0",
+  "private": false,
   "license": "Apache-2.0",
   "scripts": {
     "serve": "vue-cli-service serve ./devdocs/main.ts",

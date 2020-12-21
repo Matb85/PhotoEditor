@@ -98,9 +98,7 @@ this.$root.$emit("photoEditor/cropperchange",  cropperjsmethod, [array with argu
 this.$root.$emit("photoEditor/cropperchange",  "rotateTo", 20) //rotates the image to 20 degrees
 ```
 
-#### Vuex
-
-##### actions
+#### Vuex - actions
 
 - updatesettings - changes value of one css filter, in order to see the result call the alterphoto event
 
@@ -108,7 +106,7 @@ this.$root.$emit("photoEditor/cropperchange",  "rotateTo", 20) //rotates the ima
 this.$store.dispatch("photoEditor/updatesettings", { func: cssfiltername, val: value });
 ```
 
-##### mutations
+#### Vuex - mutations
 
 - resetStore - reset the vuex module to its initial state and clear sessionStorage
 
@@ -133,10 +131,16 @@ npm install
 npm run serve
 ```
 
-### Compiles and minifies for production
+### Compiles and minifies docs for production
 
 ```
-npm run build
+npm run build:docs
+```
+
+### Compiles and minifies the library for production
+
+```
+npm run build:lib
 ```
 
 ### Lints and fixes files
