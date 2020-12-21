@@ -38,12 +38,12 @@
     "/dist"
   ],
   "dependencies": {
-    "cropperjs": "^1.5.9",
-    "buefy": "^0.9.4"
+    "cropperjs": "^1.5.9"
   },
   "peerDependencies": {
     "vuex": "^3.4.0",
-    "vue": "^2.6.11"
+    "vue": "^2.6.11",
+    "buefy": "^0.9.4"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.33.0",
@@ -70,6 +70,7 @@
     "vue-property-decorator": "^8.4.2",
     "vue-router": "^3.2.0",
     "vuex": "^3.4.0",
-    "vue": "^2.6.11"
+    "vue": "^2.6.11",
+    "buefy": "^0.9.4"
   }
 }
