@@ -6,13 +6,13 @@
           <cropperOptions />
         </b-menu-item>
         <b-menu-item animation="none" label="Edit">
-          <optionSlider v-for="option in options" :key="option.key" :option="option"></optionSlider>
+          <optionSlider v-for="option in options" :key="option.name" :option="option"></optionSlider>
         </b-menu-item>
         <b-menu-item animation="none" label="Apply effects">
-          <optionSlider v-for="option in effects" :key="option.key" :option="option"></optionSlider>
+          <optionSlider v-for="option in effects" :key="option.name" :option="option"></optionSlider>
         </b-menu-item>
         <b-menu-item animation="none" label="Apply filters">
-          <optionCheckBox v-for="option in filters" :key="option.key" :option="option"></optionCheckBox>
+          <optionCheckBox v-for="option in filters" :key="option.name" :option="option"></optionCheckBox>
         </b-menu-item>
       </b-menu-list>
     </b-menu>

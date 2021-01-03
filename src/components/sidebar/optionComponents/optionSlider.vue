@@ -28,7 +28,7 @@ export default class OptionSlider extends Vue {
   }
   @Watch("val")
   valWatcher(newval: number) {
-    this.$store.dispatch("photoEditor/updatesettings", { func: this.option.func, val: newval });
+    this.$store.commit("photoEditor/updatesettings", { func: this.option.func, val: newval });
     this.$root.$emit("photoEditor/alterphoto");
   }
 

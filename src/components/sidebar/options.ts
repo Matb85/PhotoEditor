@@ -1,7 +1,6 @@
 import { Component, Vue } from "vue-property-decorator";
-
+import { FilterProtoI } from "@/store/photoEditorModule";
 export interface OptionInterface {
-  id: number;
   name: string;
   func: string | object;
 }
@@ -11,15 +10,10 @@ export interface SliderInterface extends OptionInterface {
   max: number;
   val: number;
 }
-
-let id = 0;
 class Option implements OptionInterface {
-  id: number;
   name: string;
   func: string | object;
-  constructor(name: string, func: string | object) {
-    this.id = id;
-    id++;
+  constructor(name: string, func: string | FilterProtoI) {
     this.name = name;
     this.func = func;
   }
@@ -108,4 +102,4 @@ export default class Options extends Vue {
       ],
     };
   }
-};
+}

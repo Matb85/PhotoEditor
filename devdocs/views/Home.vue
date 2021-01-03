@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <photoEditor clearDataOnDestroy="true" />
+    <photoEditor />
   </div>
 </template>
 

@@ -1,7 +1,7 @@
 <template>
   <li>
     <a>
-      <b-radio class="my-1" v-model="$store.state.photoEditor.curfiltername" :native-value="option.name" @input="input">
+      <b-radio class="my-1" v-model="curFilterName" :native-value="option.name">
         {{ option.name }}
       </b-radio>
     </a>
@@ -15,8 +15,11 @@ import { OptionInterface } from "../options";
 export default class OptionCheckBox extends Vue {
   @Prop({ required: true }) option: OptionInterface;
 
-  input() {
-    this.$store.dispatch("photoEditor/applyfilter", this.option.func);
+  get curFilterName() {
+    return this.$store.state.photoEditor.curfiltername;
+  }
+  set curFilterName(name) {
+    this.$store.commit("photoEditor/applyfilter", { filter: this.option.func, name: name });
     this.$root.$emit("photoEditor/alterphoto");
   }
 }

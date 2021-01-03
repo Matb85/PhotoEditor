@@ -3,13 +3,26 @@ import { Module } from "vuex";
 interface State {
   orginalsrc: string;
   fileReady: boolean;
-  curfilter: object;
+  curfilter: FilterI;
   curfiltername: string;
-  curset: object;
+  curset: FilterI;
   width: number;
   height: number;
 }
-function init(f: any) {
+interface FilterI {
+  opacity: number;
+  brightness: number;
+  hueRotate: number;
+  saturate: number;
+  contrast: number;
+  invert: number;
+  sepia: number;
+  grayscale: number;
+  blur: number;
+}
+export type FilterProtoI = Partial<FilterI>;
+
+function init(f: FilterProtoI): FilterI {
   return {
     opacity: f.opacity || 0,
     brightness: f.brightness || 0,
@@ -30,24 +43,29 @@ export default {
     width: sessionStorage.width,
     height: sessionStorage.height,
     fileReady: sessionStorage.fileReady ? true : false,
-    curfiltername: "default",
+    curfiltername: sessionStorage.curfiltername ? sessionStorage.curfiltername : "default",
     curfilter: sessionStorage.curfilter ? JSON.parse(sessionStorage.curfilter) : init({}),
     curset: sessionStorage.curset ? JSON.parse(sessionStorage.curset) : init({ opacity: 100 }),
   },
   mutations: {
-    applyfilter(state, filter) {
-      state.curfilter = filter;
-      sessionStorage.curfilter = JSON.stringify(filter);
+    applyfilter(state, { filter, name }: { filter: FilterProtoI; name: string }) {
+      state.curfiltername = name;
+      sessionStorage.setItem("curfiltername", name);
+      const fullfilter = init(filter);
+      state.curfilter = fullfilter;
+      sessionStorage.setItem("curfilter", JSON.stringify(fullfilter));
     },
-    updatesettings(state, newset) {
-      state.curset = newset;
-      sessionStorage.curset = JSON.stringify(newset);
+    updatesettings(state, { func, val }: { func: keyof FilterI; val: number }) {
+      const settings: FilterI = Object.assign(state.curset);
+      settings[func] = val;
+      state.curset = settings;
+      sessionStorage.setItem("curset", JSON.stringify(settings));
     },
     resetStore(state) {
       Object.assign(state, {
         orginalsrc: "",
-        width: null,
-        height: null,
+        width: 0,
+        height: 0,
         fileReady: false,
         curfiltername: "default",
         curfilter: init({}),
@@ -59,15 +77,6 @@ export default {
     },
   },
   actions: {
-    applyfilter(context, filter) {
-      const base: any = init(filter);
-      context.commit("applyfilter", base);
-    },
-    updatesettings(context, { func, val }) {
-      const settings: any = Object.assign(context.state.curset);
-      settings[func] = val;
-      context.commit("updatesettings", settings);
-    },
     initImage({ state }, { src, width, height }) {
       state.fileReady = true;
       state.orginalsrc = src;
@@ -82,8 +91,8 @@ export default {
   getters: {
     //all edits merged together
     alleditsmerged(state) {
-      const f: any = state.curfilter;
-      const s: any = state.curset;
+      const f: FilterI = state.curfilter;
+      const s: FilterI = state.curset;
       return `
       brightness(${100 + f.brightness + s.brightness}%)
       hue-rotate(${f.hueRotate + s.hueRotate}deg)

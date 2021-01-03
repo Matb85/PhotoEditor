@@ -1,9 +1,12 @@
 {
   "compilerOptions": {
     "noImplicitAny": true,
+    "noImplicitThis": true,
     "strictPropertyInitialization": false,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
     //
-    "target": "es5",
+    "target": "ES2018",
     "module": "esnext",
     "strict": true,
     "jsx": "preserve",
