@@ -2,7 +2,7 @@
   <div class="photo-con">
     <div class="canvas-con" :style="{ overflow: !iscropperopen ? 'hidden' : 'initial' }">
       <canvas
-        v-if="$store.state.photoEditor.fileReady"
+        v-show="$store.state.photoEditor.fileReady"
         id="canvas"
         ref="canvas"
         :width="width"
@@ -39,15 +39,12 @@ export default class Photo extends Mixins(CropperSetup) {
     const reader = new FileReader();
     reader.onload = () => {
       this.image.onload = () => {
-        this.$store
-          .dispatch("photoEditor/initImage", {
-            src: reader.result,
-            width: this.image.width,
-            height: this.image.height,
-          })
-          .then(() => {
-            this.aftermounted();
-          });
+        this.$store.commit("photoEditor/initImage", {
+          src: reader.result,
+          width: this.image.width,
+          height: this.image.height,
+        });
+        this.aftermounted();
       };
       this.image.src = reader.result as string;
     };

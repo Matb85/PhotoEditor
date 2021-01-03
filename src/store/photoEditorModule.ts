@@ -75,9 +75,7 @@ export default {
         sessionStorage.removeItem(i);
       }
     },
-  },
-  actions: {
-    initImage({ state }, { src, width, height }) {
+    initImage(state, { src, width, height }) {
       state.fileReady = true;
       state.orginalsrc = src;
       state.width = width;
@@ -88,6 +86,7 @@ export default {
       sessionStorage.setItem("orginalsrc", src);
     },
   },
+  actions: {},
   getters: {
     //all edits merged together
     alleditsmerged(state) {
