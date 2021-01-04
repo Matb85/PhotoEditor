@@ -1,14 +1,12 @@
 <template>
   <div class="photo-con">
-    <div class="canvas-con" :style="{ overflow: !iscropperopen ? 'hidden' : 'initial' }">
-      <canvas
-        v-show="$store.state.photoEditor.fileReady"
-        id="canvas"
-        ref="canvas"
-        :width="width"
-        :height="height"
-      ></canvas>
-    </div>
+    <canvas
+      v-show="$store.state.photoEditor.fileReady"
+      id="canvas"
+      ref="canvas"
+      :width="width"
+      :height="height"
+    ></canvas>
     <b-upload v-if="!$store.state.photoEditor.fileReady" @input="initimage($event)" accept=".jpg,.jpeg,.png" drag-drop>
       <section class="section">
         <div class="content has-text-centered">
@@ -64,7 +62,6 @@ export default class Photo extends Mixins(CropperSetup) {
   afterReload() {
     this.image.src = this.$store.state.photoEditor.orginalsrc;
     this.image.onload = () => {
-      this.ctx.drawImage(this.image, 0, 0, this.width, this.height);
       this.alterphoto();
       if (sessionStorage.croppperData) {
         this.cropperchange("init", []);
@@ -79,7 +76,8 @@ export default class Photo extends Mixins(CropperSetup) {
     };
   }
   alterphoto() {
-    this.canvas.style.filter = this.$store.getters["photoEditor/alleditsmerged"];
+    this.ctx.filter = this.$store.getters["photoEditor/alleditsmerged"];
+    this.ctx.drawImage(this.image, 0, 0, this.width, this.height);
   }
   mounted() {
     if (this.$store.state.photoEditor.fileReady) this.aftermounted();
@@ -94,13 +92,14 @@ export default class Photo extends Mixins(CropperSetup) {
   bottom: 0;
   width: calc(100% - 260px);
   height: 100%;
+  padding: 1rem;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-content: center;
   canvas {
-    background-color: black;
-    max-width: calc(100vw - 260px - 2rem);
-    max-height: calc(100vh - 5.5rem);
+    background-color: white;
+    max-height: 100%;
+    max-width: 100%;
     display: block;
   }
 }

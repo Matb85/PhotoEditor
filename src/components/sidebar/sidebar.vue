@@ -46,8 +46,7 @@ export default class Sidebar extends Mixins(Options) {
   }
   .sidebar-content.is-absolute {
     padding: 1rem 0.25rem 0 0.25rem;
-    box-shadow: 2px 0px 4px rgba(#000, 0.25);
-
+    box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.25);
     .reset {
       position: absolute !important;
       right: 0;
