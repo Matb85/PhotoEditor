@@ -95,11 +95,11 @@ export default class Photo extends Mixins(CropperSetup) {
   padding: 1rem;
   display: flex;
   justify-content: center;
-  align-content: center;
+  align-items: center;
   canvas {
     background-color: white;
-    max-height: 100%;
     max-width: 100%;
+    max-height: 100%;
     display: block;
   }
 }

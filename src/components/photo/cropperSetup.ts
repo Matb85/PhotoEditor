@@ -42,14 +42,12 @@ export default class CropperSetup extends Vue {
       zoomable: false,
       data: this.cropperData,
     });
-    this.iscropperopen = true;
     this.cropper.customdestroy = () => {
       this.cropperData = this.cropper.getData();
       sessionStorage.setItem("cropperData", JSON.stringify(this.cropperData));
       this.drawImage(this.cropperData, this.cropper.getCroppedCanvas({ fillColor: "#fff" }));
       this.cropper.destroy();
       this.cropper.init = this.initcropper;
-      this.iscropperopen = false;
     };
   }
   cropperchange(func: CropperProps, args: Array<string>) {
