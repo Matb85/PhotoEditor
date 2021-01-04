@@ -61,7 +61,16 @@ export default {
       state.curset = settings;
       sessionStorage.setItem("curset", JSON.stringify(settings));
     },
-    resetStore(state) {
+    reset(state) {
+      state.curfiltername = "default";
+      state.curfilter = init({});
+      state.curset = init({ opacity: 100 });
+
+      sessionStorage.removeItem("curset");
+      sessionStorage.removeItem("curfilter");
+      sessionStorage.removeItem("curfiltername");
+    },
+    clearModule(state) {
       Object.assign(state, {
         orginalsrc: "",
         width: 0,

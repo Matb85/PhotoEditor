@@ -22,7 +22,7 @@ export default class PhotoEditor extends Vue {
 
   destroyEditor() {
     console.log("destroying");
-    this.$store.commit("photoEditor/resetStore");
+    this.$store.commit("photoEditor/clearModuler");
     this.$store.unregisterModule("photoEditor");
   }
   //hooks

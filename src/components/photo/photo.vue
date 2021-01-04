@@ -107,13 +107,7 @@ export default class Photo extends Mixins(CropperSetup) {
   .photo-con {
     width: 100%;
     height: 60%;
-    top: 3.5em;
-    canvas {
-      background-color: black;
-      max-width: calc(100vw - 0.5rem);
-      max-height: calc(60vh - 2rem);
-      display: block;
-    }
+    top: 0;
   }
 }
 </style>
