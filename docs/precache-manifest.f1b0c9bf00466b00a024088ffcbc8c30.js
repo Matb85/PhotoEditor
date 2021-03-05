@@ -4,12 +4,12 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/PhotoEditor/browserconfig.xml"
   },
   {
-    "revision": "7cb38ae22117c702dfce",
-    "url": "/PhotoEditor/css/app.342f3124.css"
+    "revision": "84aadba22657b7695d3b",
+    "url": "/PhotoEditor/css/app.8e8df7c0.css"
   },
   {
-    "revision": "2b5cb16b2aec855a033c",
-    "url": "/PhotoEditor/css/chunk-vendors.4b260618.css"
+    "revision": "530a79868d4fefe5d122",
+    "url": "/PhotoEditor/css/chunk-vendors.1cead4a4.css"
   },
   {
     "revision": "4b6a84877518b7a2af3bd90d4f66802d",
@@ -20,20 +20,20 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/PhotoEditor/img/logopadding.png"
   },
   {
-    "revision": "345cb75be7d32a28f805fb5b7abdffe1",
+    "revision": "cecfca915d7a1f2f143184ab7503a536",
     "url": "/PhotoEditor/index.html"
   },
   {
-    "revision": "4789d1827a6d74ba59d5",
-    "url": "/PhotoEditor/js/about.43463ac0.js"
+    "revision": "0119f02596b210c13398",
+    "url": "/PhotoEditor/js/about.10fc8f38.js"
   },
   {
-    "revision": "7cb38ae22117c702dfce",
-    "url": "/PhotoEditor/js/app.205d9b7c.js"
+    "revision": "84aadba22657b7695d3b",
+    "url": "/PhotoEditor/js/app.226eb7c4.js"
   },
   {
-    "revision": "2b5cb16b2aec855a033c",
-    "url": "/PhotoEditor/js/chunk-vendors.4f73a43e.js"
+    "revision": "530a79868d4fefe5d122",
+    "url": "/PhotoEditor/js/chunk-vendors.d9aa4a7d.js"
   },
   {
     "revision": "7c5fa27f4c88ad0dcdac1a48e60b0711",

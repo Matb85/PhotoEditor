@@ -28,10 +28,9 @@ export default class PhotoEditor extends Vue {
   //hooks
   beforeCreate() {
     if (!this.$store) throw new Error("Store is not available.");
-    if (!this.$store.state.photoEditor) {
+    if (!this.$store.state.photoEditor)
       this.$store.registerModule("photoEditor", photoEditorModule, { preserveState: false });
-      console.log(this.$store.state.photoEditor);
-    }
+
     this.$root.$on("photoEditor/destroy", () => {
       this.destroyEditor();
     });

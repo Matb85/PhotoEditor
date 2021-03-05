@@ -11,7 +11,7 @@
       <p>
         Photo Editor can be considered as a showcase of various tech. It is a Vue SPA utilizing
         <a href="https://buefy.org/">Buefy</a>, canvas filters and
-        <a href="https://github.com/fengyuanchen/cropperjs">Cropperjs</a>. All in all, it's a fun hobby project!
+        <a href="https://github.com/fengyuanchen/cropperjs">Cropperjs</a>.
       </p>
 
       <h3 class="title is-3 mb-1">Usage</h3>
@@ -29,12 +29,13 @@
         </li>
         <li>cropping and rotating thanks to <a href="https://github.com/fengyuanchen/cropperjs">Cropperjs</a></li>
       </ul>
-      <h3 class="title is-3 mb-1">Cotributing</h3>
       <p>
-        Certainly, contributions are welcome. So if you'd like to add functionality or simply make it better, go ahead!
-        These are the early days of this project so bugs are more than probable and some features may lack. I recommend
-        raising an issue/PR before doing anything.
+        Yes, you can install the PhotoEditor via npm and use it in your own project - check the See More section below.
       </p>
+      <h3 class="title is-3 mb-1">See More</h3>
+      <a href="https://github.com/matb85/photoEditor/"
+        >For more info (contributing, usage in your own project, API) check out the repo on Github</a
+      >
     </article>
   </div>
 </template>

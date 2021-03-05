@@ -1,4 +1,3 @@
-const WorkerPlugin = require("worker-plugin");
 const NAME = "Photo Editor";
 
 const islib = process.argv.includes("build") && process.argv.includes("lib");
@@ -8,9 +7,6 @@ module.exports = islib
   ? {}
   : {
       publicPath: process.env.NODE_ENV === "production" ? "/PhotoEditor/" : "/",
-      configureWebpack: {
-        plugins: [new WorkerPlugin()],
-      },
       chainWebpack: config => {
         config.plugin("html").tap(args => {
           args[0].title = NAME;
