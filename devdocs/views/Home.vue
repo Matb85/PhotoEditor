@@ -14,7 +14,7 @@ export default {
   },
 };
 </script>
-<style scoped lang="scss">
+<style>
 .home {
   position: relative;
   top: 3.3rem;
