@@ -9,12 +9,6 @@ workbox.precaching.precacheAndRoute(self.__precacheManifest);
 workbox.core.skipWaiting();
 workbox.core.clientsClaim();
 
-console.dir(workbox);
-console.dir(self);
-console.dir(self.__precacheManifest);
-console.dir(process.env.BASE_URL);
-console.dir(process.env);
-
 registerRoute(
   ({ request }) => request.destination === "image",
   new CacheFirst({

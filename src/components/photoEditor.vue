@@ -21,7 +21,6 @@ export default class PhotoEditor extends Vue {
   @Prop({ required: false }) readonly clearDataOnDestroy: boolean;
 
   destroyEditor() {
-    console.log("destroying");
     this.$store.commit("photoEditor/clearModuler");
     this.$store.unregisterModule("photoEditor");
   }

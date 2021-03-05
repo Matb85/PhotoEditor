@@ -1,4 +1,4 @@
-importScripts("/PhotoEditor/precache-manifest.f1b0c9bf00466b00a024088ffcbc8c30.js", "https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
+importScripts("/PhotoEditor/precache-manifest.2fc3ba0688a8ebe9a1d4c03ff07cdb7f.js", "https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 /* eslint-disable no-undef */
 
@@ -10,12 +10,6 @@ workbox.precaching.precacheAndRoute(self.__precacheManifest);
 
 workbox.core.skipWaiting();
 workbox.core.clientsClaim();
-
-console.dir(workbox);
-console.dir(self);
-console.dir(self.__precacheManifest);
-console.dir(process.env.BASE_URL);
-console.dir(process.env);
 
 registerRoute(
   ({ request }) => request.destination === "image",
