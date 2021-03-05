@@ -14,11 +14,3 @@ export default {
   },
 };
 </script>
-<style>
-.home {
-  position: relative;
-  top: 3.3rem;
-  height: calc(100% - 3.3rem);
-  width: 100%;
-}
-</style>
