@@ -1,14 +1,15 @@
 {
   "name": "@matb85/photoeditor",
-  "version": "1.1.14",
+  "version": "1.1.16",
   "private": false,
   "license": "Apache-2.0",
   "scripts": {
-    "serve": "vue-cli-service serve ./devdocs/main.ts",
+    "dev": "vue-cli-service serve ./devdocs/main.ts",
     "build:docs": "vue-cli-service build --dest ./docs ./devdocs/main.ts",
     "build:lib": "vue-cli-service build --target lib --name photoEditor --skip-plugins @vue/cli-plugin-pwa,worker-plugin,html-webpack-plugin ./src/main.ts",
     "lint": "vue-cli-service lint",
-    "publish:gitnpm": "git push origin master && npm publish"
+    "publish:gitnpm": "git push origin master && npm publish",
+    "release": "standard-version"
   },
   "description": "A fully functional Photo Editor made with Vuejs",
   "author": "matb85",
@@ -39,7 +40,7 @@
     "dist/*"
   ],
   "dependencies": {
-    "cropperjs": "^1.5.9"
+    "cropperjs": "^1.5.11"
   },
   "peerDependencies": {
     "vuex": "^3.4.0",
@@ -49,29 +50,30 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
-    "@vue/cli-plugin-eslint": "~4.5.0",
-    "@vue/cli-plugin-pwa": "~4.5.0",
-    "@vue/cli-plugin-router": "~4.5.0",
-    "@vue/cli-plugin-typescript": "~4.5.0",
-    "@vue/cli-plugin-vuex": "~4.5.0",
-    "@vue/cli-service": "~4.5.0",
+    "@vue/cli-plugin-eslint": "^4.5.11",
+    "@vue/cli-plugin-pwa": "^4.5.11",
+    "@vue/cli-plugin-router": "^4.5.11",
+    "@vue/cli-plugin-typescript": "^4.5.11",
+    "@vue/cli-plugin-vuex": "^4.5.11",
+    "@vue/cli-service": "^4.5.11",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^5.0.2",
+    "buefy": "^0.9.4",
     "eslint": "^6.7.2",
-    "eslint-plugin-prettier": "^3.1.3",
+    "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-vue": "^6.2.2",
     "prettier": "^1.19.1",
-    "sass": "^1.26.5",
+    "register-service-worker": "^1.7.2",
+    "sass": "^1.32.8",
     "sass-loader": "^8.0.2",
-    "typescript": "~3.9.3",
-    "vue-template-compiler": "^2.6.11",
-    "worker-plugin": "^5.0.0",
-    "register-service-worker": "^1.7.1",
+    "standard-version": "^9.1.1",
+    "typescript": "^3.9.9",
+    "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
     "vue-property-decorator": "^8.4.2",
-    "vue-router": "^3.2.0",
-    "vuex": "^3.4.0",
-    "vue": "^2.6.11",
-    "buefy": "^0.9.4"
+    "vue-router": "^3.5.1",
+    "vue-template-compiler": "^2.6.11",
+    "vuex": "^3.6.2",
+    "worker-plugin": "^5.0.0"
   }
 }
