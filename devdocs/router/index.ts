@@ -4,15 +4,14 @@ import Home from "../views/Home.vue";
 import NotFound from "../views/NotFound.vue";
 
 Vue.use(VueRouter);
-const BASE = process.env.NODE_ENV === "production" ? process.env.VUE_APP_PUBLIC_PATH : "/";
 const routes: Array<RouteConfig> = [
   {
-    path: BASE,
+    path: "/",
     name: "Home",
     component: Home,
   },
   {
-    path: BASE + "about",
+    path: "/about",
     name: "About",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
@@ -29,6 +28,7 @@ const routes: Array<RouteConfig> = [
 const router = new VueRouter({
   mode: "history",
   routes,
+  base: process.env.BASE_URL,
 });
 
 export default router;

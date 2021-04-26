@@ -1,4 +1,4 @@
-importScripts("/PhotoEditor/precache-manifest.be979a19e66e4c213d8a1005de508074.js", "https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
+importScripts("/PhotoEditor/precache-manifest.0ef731ed12c1d278e0c5b0bc6502b673.js", "https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 /* eslint-disable no-undef */
 

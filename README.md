@@ -8,8 +8,6 @@
 
 Photo Editor can be considered as a showcase of various tech. It is a Vue SPA utilizing [Buefy](https://buefy.org/), canvas filters and [Cropperjs](https://github.com/fengyuanchen/cropperjs).
 
-All in all, it's a fun hobby project!
-
 ### Usage - Spa
 
 Go to https://matb85.github.io/PhotoEditor/ Just upload a photo a start tweaking the sliders! Currently, there are 3 basic editing options:
