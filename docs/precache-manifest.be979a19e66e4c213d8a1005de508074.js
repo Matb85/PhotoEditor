@@ -4,7 +4,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/PhotoEditor/browserconfig.xml"
   },
   {
-    "revision": "392ba801540968d7203f",
+    "revision": "e1573de7430af79ffe0d",
     "url": "/PhotoEditor/css/app.9010fe0e.css"
   },
   {
@@ -20,7 +20,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/PhotoEditor/img/logopadding.png"
   },
   {
-    "revision": "08684d4f26557a960e81273734bf3e15",
+    "revision": "bb08af62960881204addd7989dc528ce",
     "url": "/PhotoEditor/index.html"
   },
   {
@@ -28,8 +28,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/PhotoEditor/js/about.60c17894.js"
   },
   {
-    "revision": "392ba801540968d7203f",
-    "url": "/PhotoEditor/js/app.32b77381.js"
+    "revision": "e1573de7430af79ffe0d",
+    "url": "/PhotoEditor/js/app.6544af3c.js"
   },
   {
     "revision": "530a79868d4fefe5d122",
