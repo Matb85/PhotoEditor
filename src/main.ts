@@ -1,15 +1,7 @@
-import photoEditor from "./components/photoEditor.vue";
+import { createApp } from 'vue';
+import './assets/style.css';
+import App from './App.vue';
+import router from './router';
+import { store } from './store';
 
-export default photoEditor;
-
-// What should happen if the user installs the library as a plugin
-function install(Vue: any) {
-  Vue.component("photoEditor", photoEditor);
-}
-
-// Export the library as a plugin
-export { install };
-
-if (typeof window !== "undefined" && window.Vue) {
-  window.Vue.use(install);
-}
+createApp(App).use(router).use(store).mount('#app');
