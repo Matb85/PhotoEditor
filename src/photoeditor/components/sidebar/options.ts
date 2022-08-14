@@ -40,7 +40,6 @@ export default function data(store: Store<any>) {
       new Slider('saturate', 'saturate', 1, -100, 100),
       new Slider('contrast', 'contrast', 1, -100, 100),
       new Slider('hue-rotate', 'hueRotate', 1, 0, 180),
-      new Slider('opacity', 'opacity', 1, 0, 100),
     ],
     effects: [
       new Slider('invert', 'invert', 1, 0, 100),

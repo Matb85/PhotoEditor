@@ -125,7 +125,6 @@ export default {
       sepia(${f.sepia + s.sepia}%)
       grayscale(${f.grayscale + s.grayscale}%)
       blur(${f.blur + s.blur}px)
-      opacity(${f.opacity + s.opacity}%)
       `;
     },
   },

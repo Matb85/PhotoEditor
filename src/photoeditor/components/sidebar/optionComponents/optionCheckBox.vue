@@ -18,8 +18,8 @@ const props = defineProps<{ readonly option: OptionInterface }>();
 
 const curFilterName = computed({
   get: () => store.state.photoEditor.curfiltername,
-  set: () => {
-    store.commit('photoEditor/applyfilter', { filter: props.option.func });
+  set: (isTrue) => {
+    store.commit('photoEditor/applyfilter', { filter: isTrue ? props.option.func : 'default' });
     window.dispatchEvent(new CustomEvent('photoEditor/alterphoto'));
   },
 });

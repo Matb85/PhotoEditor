@@ -74,6 +74,7 @@ function afterReload() {
   };
 }
 function alterphoto() {
+  console.log(store.getters['photoEditor/alleditsmerged']);
   ctx.filter = store.getters['photoEditor/alleditsmerged'];
   ctx.drawImage(image, 0, 0, width.value, height.value);
 }
@@ -117,7 +118,7 @@ function cropperchange(e: CustomEvent) {
   console.log(func, args);
   //eslint-disable-next-line
   // @ts-ignore
-  cropper[func](...args);
+  if (cropper[func]) cropper[func](...args);
 }
 function download(e: CustomEvent) {
   const { format, quality }: { format: string; quality: number } = (e as CustomEvent).detail;
