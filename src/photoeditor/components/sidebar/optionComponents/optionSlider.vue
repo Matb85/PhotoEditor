@@ -1,39 +1,30 @@
 <template>
-  <li>
-    <a style="position: relative;">
+  <ElMenuItem index="2" class="relative flex-col gap-0">
+    <div class="w-full flex justify-between -mb-2">
       <span>{{ option.name }}</span>
-      <span class="reset has-text-weight-light is-size-7" @click="reset($event)">reset</span>
-      <b-slider
-        size="is-small"
-        class="mt-2 mb-2"
-        :min="option.min"
-        :max="option.max"
-        :step="option.step"
-        v-model="option.val"
-      ></b-slider>
-    </a>
-  </li>
+      <span class="font-thin" @click="reset()">reset</span>
+    </div>
+    <ElSlider size="small" :min="option.min" :max="option.max" :step="option.step" v-model="val"></ElSlider>
+  </ElMenuItem>
 </template>
 
-<script lang="ts">
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
-import { SliderInterface } from "../options";
+<script setup lang="ts">
+import { ElSlider, ElMenuItem } from 'element-plus';
 
-@Component
-export default class OptionSlider extends Vue {
-  @Prop({ required: true }) option: SliderInterface;
+import { ref, watch } from 'vue';
+import { useStore } from 'vuex';
+import { SliderInterface } from '../options';
+const props = defineProps<{ option: SliderInterface }>();
+const store = useStore();
 
-  get val() {
-    return this.option.val;
-  }
-  @Watch("val")
-  valWatcher(newval: number) {
-    this.$store.commit("photoEditor/updatesettings", { func: this.option.func, val: newval });
-    this.$root.$emit("photoEditor/alterphoto");
-  }
+const val = ref(props.option.val);
 
-  reset() {
-    this.option.val = 0;
-  }
+watch(val, (newval: number) => {
+  store.commit('photoEditor/updatesettings', { func: props.option.func, val: newval });
+  window.dispatchEvent(new CustomEvent('photoEditor/alterphoto'));
+});
+
+function reset() {
+  val.value = 0;
 }
 </script>

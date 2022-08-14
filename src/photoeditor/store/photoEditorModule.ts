@@ -43,21 +43,12 @@ export default {
     width: sessionStorage.width,
     height: sessionStorage.height,
     fileReady: sessionStorage.fileReady ? true : false,
-    curfiltername: sessionStorage.curfiltername
-      ? sessionStorage.curfiltername
-      : 'default',
-    curfilter: sessionStorage.curfilter
-      ? JSON.parse(sessionStorage.curfilter)
-      : init({}),
-    curset: sessionStorage.curset
-      ? JSON.parse(sessionStorage.curset)
-      : init({ opacity: 100 }),
+    curfiltername: sessionStorage.curfiltername ? sessionStorage.curfiltername : 'default',
+    curfilter: sessionStorage.curfilter ? JSON.parse(sessionStorage.curfilter) : init({}),
+    curset: sessionStorage.curset ? JSON.parse(sessionStorage.curset) : init({ opacity: 100 }),
   },
   mutations: {
-    applyfilter(
-      state,
-      { filter, name }: { filter: FilterProtoI; name: string }
-    ) {
+    applyfilter(state, { filter, name }: { filter: FilterProtoI; name: string }) {
       state.curfiltername = name;
       sessionStorage.setItem('curfiltername', name);
       const fullfilter = init(filter);

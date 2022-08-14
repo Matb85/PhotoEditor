@@ -1,26 +1,26 @@
 <template>
-  <li>
-    <a>
-      <b-radio class="my-1" v-model="curFilterName" :native-value="option.name">
-        {{ option.name }}
-      </b-radio>
-    </a>
-  </li>
+  <ElMenuItem>
+    <ElCheckbox class="my-1" v-model="curFilterName" :native-value="option.name">
+      {{ option.name }}
+    </ElCheckbox>
+  </ElMenuItem>
 </template>
 
-<script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
-import { OptionInterface } from "../options";
-@Component
-export default class OptionCheckBox extends Vue {
-  @Prop({ required: true }) option: OptionInterface;
+<script setup lang="ts">
+import { ElCheckbox, ElMenuItem } from 'element-plus';
 
-  get curFilterName() {
-    return this.$store.state.photoEditor.curfiltername;
-  }
-  set curFilterName(name) {
-    this.$store.commit("photoEditor/applyfilter", { filter: this.option.func, name: name });
-    this.$root.$emit("photoEditor/alterphoto");
-  }
-}
+import { OptionInterface } from '../options';
+import { useStore } from 'vuex';
+const store = useStore();
+import { computed } from 'vue';
+
+const props = defineProps<{ readonly option: OptionInterface }>();
+
+const curFilterName = computed({
+  get: () => store.state.photoEditor.curfiltername,
+  set: () => {
+    store.commit('photoEditor/applyfilter', { filter: props.option.func });
+    window.dispatchEvent(new CustomEvent('photoEditor/alterphoto'));
+  },
+});
 </script>
