@@ -1,13 +1,20 @@
 <template>
   <ElMenuItem class="flex-col !h-auto" index="1">
+    <span class="w-full -mb-2">Actions</span>
+    <div class="w-full flex flex-wrap gap-1">
+      <ElButton type="primary" size="small" @click="start" :disabled="isCropperOpen">Start</ElButton>
+      <ElButton type="primary" size="small" @click="save" :disabled="!isCropperOpen">Save</ElButton>
+      <ElButton plain type="danger" size="small" @click="reset" :disabled="!isCropperOpen">Reset</ElButton>
+    </div>
+  </ElMenuItem>
+  <ElMenuItem class="flex-col !h-auto" index="1">
     <span class="w-full -mb-2">aspect ratio</span>
-    <div class="w-full flex flex-wrap gap-1 pb-3">
+    <div class="w-full flex flex-wrap gap-1">
       <ElButton
         v-for="btn in aspectRatiosBtns"
         :key="btn.key"
         :plain="btn.val != curAspectRatio"
         @click="curAspectRatio = btn.val"
-        :native-value="btn.val"
         type="primary"
         size="small"
         >{{ btn.name }}
@@ -20,15 +27,12 @@
       <span class="font-thin" @click="rotation = 0">reset</span>
     </div>
     <ElSlider v-model="rotation" :max="22.5" :min="-22.5" :step="0.5" size="small"></ElSlider>
-    <div class="w-full flex flex-wrap gap-1 pt-2 pb-3">
+    <div class="w-full flex flex-wrap gap-1 pt-2">
       <ElButton plain type="primary" icon-left="rotate-right" size="small" @click="additionalrot += 90">90°</ElButton>
       <ElButton plain type="primary" icon-left="rotate-right" size="small" @click="additionalrot += 45">45°</ElButton>
       <ElButton plain type="primary" icon-left="flip-horizontal" size="small" @click="flip('X')">flip h</ElButton>
       <ElButton plain type="primary" icon-left="flip-vertical" size="small" @click="flip('Y')">flip v</ElButton>
     </div>
-  </ElMenuItem>
-  <ElMenuItem index="1">
-    <ElButton plain type="danger" outlined icon-left="close" size="small" @click="reset">reset all</ElButton>
   </ElMenuItem>
 </template>
 
@@ -52,8 +56,9 @@ class AspectRatiosBtn {
   }
 }
 
-const anitialAR = store.state.photoEditor.width / store.state.photoEditor.height;
-let curAspectRatio = ref<string | number>(anitialAR);
+const initialAR = store.state.photoEditor.width / store.state.photoEditor.height;
+console.log(initialAR);
+let curAspectRatio = ref<string | number>(initialAR);
 let aspectRatiosBtns = [
   new AspectRatiosBtn('18/9', 18 / 9),
   new AspectRatiosBtn('16/9', 16 / 9),
@@ -61,7 +66,7 @@ let aspectRatiosBtns = [
   new AspectRatiosBtn('4/3', 4 / 3),
   new AspectRatiosBtn('1/1', 1),
   new AspectRatiosBtn('free', 'free'),
-  new AspectRatiosBtn('original', anitialAR),
+  new AspectRatiosBtn('original', initialAR),
 ];
 const rotation = ref(0);
 const additionalrot = ref(0);
@@ -84,8 +89,18 @@ watch(additionalrot, () => {
     new CustomEvent('photoEditor/cropperchange', detail('rotateTo', [rotation.value + additionalrot.value]))
   );
 });
+
+let isCropperOpen = ref(false);
 function reset() {
   window.dispatchEvent(new CustomEvent('photoEditor/cropperchange', detail('reset', [])));
+}
+function start() {
+  window.dispatchEvent(new CustomEvent('photoEditor/cropperchange', detail('init', [])));
+  isCropperOpen.value = true;
+}
+function save() {
+  window.dispatchEvent(new CustomEvent('photoEditor/cropperchange', detail('customdestroy', [])));
+  isCropperOpen.value = false;
 }
 function flip(axis: 'X' | 'Y') {
   flipState[axis] = !flipState[axis];

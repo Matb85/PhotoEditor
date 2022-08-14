@@ -4,7 +4,6 @@
     <ElUpload v-if="!store.state.photoEditor.fileReady" @input="initimage" accept=".jpg,.jpeg,.png" drag>
       <section class="section">
         <div class="content has-text-centered">
-          <b-icon icon="upload" size="is-large"></b-icon>
           <p>Drop your files here or click to upload</p>
         </div>
       </section>
@@ -13,13 +12,13 @@
 </template>
 
 <script setup lang="ts">
-import { ElUpload } from 'element-plus';
-import { computed, ref, onMounted } from 'vue';
-import { useStore } from 'vuex';
-const store = useStore();
-
 import Cropper from 'cropperjs';
 import 'cropperjs/dist/cropper.min.css';
+import { ElUpload } from 'element-plus';
+import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
+import { useStore } from 'vuex';
+import { detail } from '../utils';
+const store = useStore();
 
 type CropperType = {
   //used methods / properties
@@ -30,7 +29,6 @@ type CropperType = {
   init?: () => unknown;
   customdestroy?: () => unknown;
 };
-type CropperProps = keyof CropperType;
 
 const width = computed<number>(() => store.state.photoEditor.width);
 const height = computed<number>(() => store.state.photoEditor.height);
@@ -38,6 +36,9 @@ const image = new Image();
 
 let ctx: CanvasRenderingContext2D;
 let canvas = ref<HTMLCanvasElement>();
+function getCanvas() {
+  return canvas.value as HTMLCanvasElement;
+}
 
 function initimage(event: InputEvent) {
   const input = event.target as HTMLInputElement;
@@ -57,23 +58,22 @@ function initimage(event: InputEvent) {
 }
 
 function aftermounted() {
-  ctx = (canvas.value as HTMLCanvasElement).getContext('2d') as CanvasRenderingContext2D;
+  ctx = getCanvas().getContext('2d') as CanvasRenderingContext2D;
   window.addEventListener('photoEditor/alterphoto', () => alterphoto());
-  window.addEventListener('photoEditor/cropperchange', (e) => {
-    const detail = (e as CustomEvent).detail;
-    cropperchange(detail.func, detail.args);
-  });
+  window.addEventListener('photoEditor/cropperchange', (e) => cropperchange(e as CustomEvent));
   afterReload();
 }
 function afterReload() {
   image.src = store.state.photoEditor.orginalsrc;
   image.onload = () => {
     alterphoto();
-    if (sessionStorage.croppperData) {
-      cropperchange('init', []);
-      (canvas.value as HTMLCanvasElement).addEventListener('ready', () => cropperchange('customdestroy', []), {
+    console.log('afterReload', sessionStorage.getItem('cropperData'));
+
+    if (sessionStorage.getItem('cropperData')) {
+      getCanvas().addEventListener('ready', () => cropperchange(detail('customdestroy', []) as CustomEvent), {
         once: true,
       });
+      cropperchange(detail('init', []) as CustomEvent);
     }
   };
 }
@@ -85,14 +85,17 @@ function alterphoto() {
 let cropper = {} as CropperType;
 let cropperData = sessionStorage.cropperData ? JSON.parse(sessionStorage.cropperData) : {};
 
-function drawImage({ width, height }: { width: number; height: number }, canvas: HTMLCanvasElement | HTMLImageElement) {
-  canvas.width = width;
-  canvas.height = height;
-  ctx.drawImage(canvas, 0, 0);
+function drawImage(
+  { width, height }: { width: number; height: number },
+  tempCanvas: HTMLCanvasElement | HTMLImageElement
+) {
+  getCanvas().width = width;
+  getCanvas().height = height;
+  ctx.drawImage(tempCanvas, 0, 0);
 }
 async function initcropper() {
   drawImage({ width: width.value, height: height.value }, image);
-  cropper = new Cropper(canvas.value as HTMLCanvasElement, {
+  cropper = new Cropper(getCanvas(), {
     initialAspectRatio: width.value / height.value,
     autoCropArea: 1,
     dragMode: 'move',
@@ -101,6 +104,7 @@ async function initcropper() {
     data: cropperData,
   }) as CropperType;
   cropper.customdestroy = () => {
+    console.log('customdestroy');
     cropperData = cropper.getData();
     sessionStorage.setItem('cropperData', JSON.stringify(cropperData));
     drawImage(cropperData, cropper.getCroppedCanvas({ fillColor: '#fff' }));
@@ -108,16 +112,21 @@ async function initcropper() {
     cropper.init = initcropper;
   };
 }
-function cropperchange(func: CropperProps, args: unknown[]) {
+function cropperchange(e: CustomEvent) {
+  const { func, args }: { func: string; args: unknown[] } = e.detail;
+  console.log(func, args);
+  //eslint-disable-next-line
+  // @ts-ignore
   cropper[func](...args);
 }
-function download(format: number, quality: number) {
+function download(e: CustomEvent) {
+  const { format, quality }: { format: string; quality: number } = (e as CustomEvent).detail;
   const tempCanvas = document.createElement('canvas');
   const ctx = tempCanvas.getContext('2d') as CanvasRenderingContext2D;
-  tempCanvas.width = (canvas.value as HTMLCanvasElement).width;
-  tempCanvas.height = (canvas.value as HTMLCanvasElement).height;
+  tempCanvas.width = getCanvas().width;
+  tempCanvas.height = getCanvas().height;
   ctx.filter = store.getters['photoEditor/alleditsmerged'];
-  ctx.drawImage(canvas.value as HTMLCanvasElement, 0, 0);
+  ctx.drawImage(getCanvas(), 0, 0);
   const readyimg = tempCanvas.toDataURL('image/' + format, quality / 100);
   const a = document.createElement('a');
   a.download = 'img.' + format;
@@ -126,13 +135,15 @@ function download(format: number, quality: number) {
 }
 
 onMounted(() => {
+  cropper.init = initcropper;
   if (store.state.photoEditor.fileReady) aftermounted();
 
-  window.addEventListener('photoEditor/', (e) => {
-    const detail = (e as CustomEvent).detail;
-    download(detail.format, detail.quality);
-  });
-  cropper.init = initcropper;
+  window.addEventListener('photoEditor/download', (e) => download(e as CustomEvent));
+});
+onBeforeUnmount(() => {
+  window.removeEventListener('photoEditor/download', (e) => download(e as CustomEvent));
+  window.removeEventListener('photoEditor/alterphoto', () => alterphoto());
+  window.removeEventListener('photoEditor/cropperchange', (e) => cropperchange(e as CustomEvent));
 });
 </script>
 
