@@ -1,14 +1,12 @@
 <template>
-  <div class="photo-con">
-    <canvas v-show="store.state.photoEditor.fileReady" ref="canvas" :width="width" :height="height"></canvas>
+  <section class="container">
+    <div class="canvas-container">
+      <canvas v-show="store.state.photoEditor.fileReady" ref="canvas" :width="width" :height="height"></canvas>
+    </div>
     <ElUpload v-if="!store.state.photoEditor.fileReady" @input="initimage" accept=".jpg,.jpeg,.png" drag>
-      <section class="section">
-        <div class="content has-text-centered">
-          <p>Drop your files here or click to upload</p>
-        </div>
-      </section>
+      <p>Drop your files here or click to upload</p>
     </ElUpload>
-  </div>
+  </section>
 </template>
 
 <script setup lang="ts">
@@ -33,7 +31,6 @@ type CropperType = {
 const width = computed<number>(() => store.state.photoEditor.width);
 const height = computed<number>(() => store.state.photoEditor.height);
 const image = new Image();
-
 let ctx: CanvasRenderingContext2D;
 let canvas = ref<HTMLCanvasElement>();
 function getCanvas() {
@@ -67,7 +64,6 @@ function afterReload() {
   image.src = store.state.photoEditor.orginalsrc;
   image.onload = () => {
     alterphoto();
-    console.log('afterReload', sessionStorage.getItem('cropperData'));
 
     if (sessionStorage.getItem('cropperData')) {
       getCanvas().addEventListener('ready', () => cropperchange(detail('customdestroy', []) as CustomEvent), {
@@ -83,7 +79,6 @@ function alterphoto() {
 }
 
 let cropper = {} as CropperType;
-let cropperData = sessionStorage.cropperData ? JSON.parse(sessionStorage.cropperData) : {};
 
 function drawImage(
   { width, height }: { width: number; height: number },
@@ -101,13 +96,18 @@ async function initcropper() {
     dragMode: 'move',
     movable: false,
     zoomable: false,
-    data: cropperData,
+    data: store.state.photoEditor.cropperData,
   }) as CropperType;
+  cropperchange(
+    detail('setAspectRatio', [
+      store.state.photoEditor.cropperData.width / store.state.photoEditor.cropperData.height,
+    ]) as CustomEvent
+  );
+
   cropper.customdestroy = () => {
-    console.log('customdestroy');
-    cropperData = cropper.getData();
-    sessionStorage.setItem('cropperData', JSON.stringify(cropperData));
-    drawImage(cropperData, cropper.getCroppedCanvas({ fillColor: '#fff' }));
+    store.state.photoEditor.cropperData = cropper.getData();
+    sessionStorage.setItem('cropperData', JSON.stringify(store.state.photoEditor.cropperData));
+    drawImage(store.state.photoEditor.cropperData, cropper.getCroppedCanvas({ fillColor: '#fff' }));
     cropper.destroy();
     cropper.init = initcropper;
   };
@@ -148,15 +148,21 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-.photo-con {
+.container {
   @apply absolute right-0 bottom-0 h-full p-4 pt-20
   flex justify-center items-center;
   width: calc(100% - theme('spacing.80'));
 }
-.photo-con canvas {
+.canvas-container {
   background-color: white;
   max-width: 100%;
   max-height: 100%;
+  display: block;
+}
+.container canvas {
+  background-color: white;
+  width: 100%;
+  height: 100%;
   display: block;
 }
 @media (max-width: 650px) {

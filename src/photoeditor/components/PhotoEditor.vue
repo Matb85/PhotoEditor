@@ -21,7 +21,6 @@ function destroyEditor() {
 }
 //hooks
 onBeforeMount(() => {
-  console.log('hi');
   if (!store) throw new Error('Store is not available.');
   if (!store.state.photoEditor)
     store.registerModule('photoEditor', photoEditorModule, {

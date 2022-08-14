@@ -6,8 +6,9 @@ interface State {
   curfilter: FilterI;
   curfiltername: string;
   curset: FilterI;
-  width: number;
-  height: number;
+  width?: string;
+  height?: string;
+  cropperData: { width: number; height: number };
 }
 interface FilterI {
   opacity: number;
@@ -39,13 +40,24 @@ function init(f: FilterProtoI): FilterI {
 export default {
   namespaced: true,
   state: {
-    orginalsrc: sessionStorage.orginalsrc || '',
-    width: sessionStorage.width,
-    height: sessionStorage.height,
-    fileReady: sessionStorage.fileReady ? true : false,
-    curfiltername: sessionStorage.curfiltername ? sessionStorage.curfiltername : 'default',
-    curfilter: sessionStorage.curfilter ? JSON.parse(sessionStorage.curfilter) : init({}),
-    curset: sessionStorage.curset ? JSON.parse(sessionStorage.curset) : init({ opacity: 100 }),
+    orginalsrc: sessionStorage.getItem('orginalsrc') || '',
+    width: sessionStorage.getItem('width'),
+    height: sessionStorage.getItem('height'),
+    //
+    fileReady: sessionStorage.getItem('fileReady') ? true : false,
+    curfiltername: sessionStorage.getItem('curfiltername') ? sessionStorage.getItem('curfiltername') : 'default',
+    //
+    curfilter: sessionStorage.getItem('curfilter ')
+      ? JSON.parse(sessionStorage.getItem('curfilter') as string)
+      : init({}),
+    //
+    curset: sessionStorage.getItem('curset')
+      ? JSON.parse(sessionStorage.getItem('curset') as string)
+      : init({ opacity: 100 }),
+    //
+    cropperData: sessionStorage.getItem('cropperData')
+      ? JSON.parse(sessionStorage.getItem('cropperData') as string)
+      : { width: sessionStorage.getItem('width'), height: sessionStorage.getItem('height') },
   },
   mutations: {
     applyfilter(state, { filter, name }: { filter: FilterProtoI; name: string }) {
@@ -79,6 +91,7 @@ export default {
         curfiltername: 'default',
         curfilter: init({}),
         curset: init({ opacity: 100 }),
+        cropperData: { width: 0, height: 0 },
       });
       for (const i in state) {
         sessionStorage.removeItem(i);
@@ -87,10 +100,12 @@ export default {
     initImage(state, { src, width, height }) {
       state.fileReady = true;
       state.orginalsrc = src;
-      state.width = width;
-      state.height = height;
+      state.width = state.cropperData.width = width;
+      state.height = state.cropperData.height = height;
+
       sessionStorage.setItem('width', width);
       sessionStorage.setItem('height', height);
+      sessionStorage.setItem('cropperData', JSON.stringify(state.cropperData));
       sessionStorage.setItem('fileReady', 'true');
       sessionStorage.setItem('orginalsrc', src);
     },

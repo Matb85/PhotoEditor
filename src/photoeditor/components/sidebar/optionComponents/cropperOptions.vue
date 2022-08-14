@@ -12,6 +12,7 @@
     <div class="w-full flex flex-wrap gap-1">
       <ElButton
         v-for="btn in aspectRatiosBtns"
+        :disabled="!isCropperOpen"
         :key="btn.key"
         :plain="btn.val != curAspectRatio"
         @click="curAspectRatio = btn.val"
@@ -26,12 +27,19 @@
       <span>rotate</span>
       <span class="font-thin" @click="rotation = 0">reset</span>
     </div>
-    <ElSlider v-model="rotation" :max="22.5" :min="-22.5" :step="0.5" size="small"></ElSlider>
+    <ElSlider
+      :disabled="!isCropperOpen"
+      v-model="rotation"
+      :max="22.5"
+      :min="-22.5"
+      :step="0.5"
+      size="small"
+    ></ElSlider>
     <div class="w-full flex flex-wrap gap-1 pt-2">
-      <ElButton plain type="primary" icon-left="rotate-right" size="small" @click="additionalrot += 90">90°</ElButton>
-      <ElButton plain type="primary" icon-left="rotate-right" size="small" @click="additionalrot += 45">45°</ElButton>
-      <ElButton plain type="primary" icon-left="flip-horizontal" size="small" @click="flip('X')">flip h</ElButton>
-      <ElButton plain type="primary" icon-left="flip-vertical" size="small" @click="flip('Y')">flip v</ElButton>
+      <ElButton :disabled="!isCropperOpen" plain type="primary" size="small" @click="additionalrot += 90">90°</ElButton>
+      <ElButton :disabled="!isCropperOpen" plain type="primary" size="small" @click="additionalrot += 45">45°</ElButton>
+      <ElButton :disabled="!isCropperOpen" plain type="primary" size="small" @click="flip('X')">flip h</ElButton>
+      <ElButton :disabled="!isCropperOpen" plain type="primary" size="small" @click="flip('Y')">flip v</ElButton>
     </div>
   </ElMenuItem>
 </template>
@@ -39,7 +47,7 @@
 <script setup lang="ts">
 import { detail } from '../../utils';
 import { ElButton, ElSlider, ElMenuItem } from 'element-plus';
-import { ref, watch } from 'vue';
+import { ref, watch, computed, onMounted, onBeforeUnmount } from 'vue';
 import { useStore } from 'vuex';
 const store = useStore();
 
@@ -56,9 +64,11 @@ class AspectRatiosBtn {
   }
 }
 
-const initialAR = store.state.photoEditor.width / store.state.photoEditor.height;
-console.log(initialAR);
-let curAspectRatio = ref<string | number>(initialAR);
+const initialAR = computed(
+  () => store.state.photoEditor.cropperData.width / store.state.photoEditor.cropperData.height
+);
+
+let curAspectRatio = ref<string | number>(initialAR.value);
 let aspectRatiosBtns = [
   new AspectRatiosBtn('18/9', 18 / 9),
   new AspectRatiosBtn('16/9', 16 / 9),
@@ -66,7 +76,7 @@ let aspectRatiosBtns = [
   new AspectRatiosBtn('4/3', 4 / 3),
   new AspectRatiosBtn('1/1', 1),
   new AspectRatiosBtn('free', 'free'),
-  new AspectRatiosBtn('original', initialAR),
+  new AspectRatiosBtn('original', initialAR.value),
 ];
 const rotation = ref(0);
 const additionalrot = ref(0);
@@ -100,7 +110,6 @@ function start() {
 }
 function save() {
   window.dispatchEvent(new CustomEvent('photoEditor/cropperchange', detail('customdestroy', [])));
-  isCropperOpen.value = false;
 }
 function flip(axis: 'X' | 'Y') {
   flipState[axis] = !flipState[axis];
@@ -108,6 +117,12 @@ function flip(axis: 'X' | 'Y') {
     new CustomEvent('photoEditor/cropperchange', detail('scale' + axis, [flipState[axis] ? -1 : 1]))
   );
 }
+function disableOptions(e: CustomEvent) {
+  const { func }: { func: string } = e.detail;
+  if (func == 'customdestroy') isCropperOpen.value = false;
+}
+onMounted(() => window.addEventListener('photoEditor/cropperchange', (e) => disableOptions(e as CustomEvent)));
+onBeforeUnmount(() => window.removeEventListener('photoEditor/cropperchange', (e) => disableOptions(e as CustomEvent)));
 </script>
 
 <style scoped>
