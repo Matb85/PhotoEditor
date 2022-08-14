@@ -1,10 +1,7 @@
-import { FilterProtoI } from '../../store/photoEditorModule';
+import { FilterProtoI, OptionInterface } from '../../store/photoEditorModule';
 import type { Store } from 'vuex';
-export interface OptionInterface {
-  name: string;
-  func: string | object;
-}
-export interface SliderInterface extends OptionInterface {
+
+export interface SliderInterface extends OptionInterface<string> {
   step: number;
   min: number;
   max: number;
@@ -12,8 +9,8 @@ export interface SliderInterface extends OptionInterface {
 }
 class Option implements OptionInterface {
   name: string;
-  func: string | object;
-  constructor(name: string, func: string | FilterProtoI) {
+  func: FilterProtoI;
+  constructor(name: string, func: FilterProtoI) {
     this.name = name;
     this.func = func;
   }
@@ -21,13 +18,16 @@ class Option implements OptionInterface {
 
 export default function data(store: Store<any>) {
   const curset = store.state.photoEditor.curset;
-  class Slider extends Option implements SliderInterface {
+  class Slider implements SliderInterface {
+    name: string;
+    func: string;
     step: number;
     min: number;
     max: number;
     val: number;
     constructor(name: string, func: string, step: number, min: number, max: number) {
-      super(name, func);
+      this.name = name;
+      this.func = func;
       this.step = step;
       this.min = min;
       this.max = max;

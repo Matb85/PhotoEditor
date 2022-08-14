@@ -1,26 +1,31 @@
 <template>
-  <ElMenuItem>
-    <ElCheckbox class="my-1" v-model="curFilterName" :native-value="option.name">
+  <ElRadioGroup class="w-full flex-col !items-start pl-8" v-model="filter">
+    <ElRadio v-for="(option, i) of filters" :key="option.name" class="my-1" :label="i">
       {{ option.name }}
-    </ElCheckbox>
-  </ElMenuItem>
+    </ElRadio>
+  </ElRadioGroup>
 </template>
 
 <script setup lang="ts">
-import { ElCheckbox, ElMenuItem } from 'element-plus';
-
-import { OptionInterface } from '../options';
+import { ElRadioGroup, ElRadio } from 'element-plus';
+import { OptionInterface } from '../../../store/photoEditorModule';
 import { useStore } from 'vuex';
+import { ref, watch } from 'vue';
 const store = useStore();
-import { computed } from 'vue';
+const props = defineProps<{ readonly filters: OptionInterface[] }>();
 
-const props = defineProps<{ readonly option: OptionInterface }>();
+let i = 0;
+for (; i < props.filters.length; i++) {
+  if (props.filters[i].name == store.state.photoEditor.curfiltername) {
+    break;
+  }
+}
+const filter = ref(i);
+store.commit('photoEditor/applyfilter', props.filters[i]);
 
-const curFilterName = computed({
-  get: () => store.state.photoEditor.curfiltername,
-  set: (isTrue) => {
-    store.commit('photoEditor/applyfilter', { filter: isTrue ? props.option.func : 'default' });
-    window.dispatchEvent(new CustomEvent('photoEditor/alterphoto'));
-  },
+watch(filter, (newval: number) => {
+  console.log(newval);
+  store.commit('photoEditor/applyfilter', props.filters[newval]);
+  window.dispatchEvent(new CustomEvent('photoEditor/alterphoto'));
 });
 </script>

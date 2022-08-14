@@ -14,7 +14,7 @@
     </ElSubMenu>
     <ElSubMenu index="4" @click="hideCropper">
       <template #title>Apply filters</template>
-      <OptionCheckBox v-for="option in filters" :key="option.name" :option="option"></OptionCheckBox>
+      <OptionFilters :filters="filters"></OptionFilters>
     </ElSubMenu>
   </ElMenu>
 </template>
@@ -23,7 +23,7 @@
 import { detail } from '../utils';
 import optionsFactory from './options';
 import OptionSlider from './optionComponents/optionSlider.vue';
-import OptionCheckBox from './optionComponents/optionCheckBox.vue';
+import OptionFilters from './optionComponents/optionCheckBox.vue';
 import CropperOptions from './optionComponents/cropperOptions.vue';
 import { ElMenu, ElSubMenu } from 'element-plus';
 import { useStore } from 'vuex';

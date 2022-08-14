@@ -74,7 +74,6 @@ function afterReload() {
   };
 }
 function alterphoto() {
-  console.log(store.getters['photoEditor/alleditsmerged']);
   ctx.filter = store.getters['photoEditor/alleditsmerged'];
   ctx.drawImage(image, 0, 0, width.value, height.value);
 }

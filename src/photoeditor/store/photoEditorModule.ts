@@ -1,5 +1,9 @@
 import { Module } from 'vuex';
 
+export interface OptionInterface<T = FilterProtoI> {
+  name: string;
+  func: T;
+}
 interface State {
   orginalsrc: string;
   fileReady: boolean;
@@ -60,10 +64,10 @@ export default {
       : { width: sessionStorage.getItem('width'), height: sessionStorage.getItem('height') },
   },
   mutations: {
-    applyfilter(state, { filter, name }: { filter: FilterProtoI; name: string }) {
+    applyfilter(state, { func, name }: OptionInterface) {
       state.curfiltername = name;
       sessionStorage.setItem('curfiltername', name);
-      const fullfilter = init(filter);
+      const fullfilter = init(func);
       state.curfilter = fullfilter;
       sessionStorage.setItem('curfilter', JSON.stringify(fullfilter));
     },
