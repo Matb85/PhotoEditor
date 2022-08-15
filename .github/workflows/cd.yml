@@ -20,8 +20,12 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
 
+      - uses: pnpm/action-setup@v2.2.2
+        with:
+          version: 7.x.x
+
       - name: Install dependencies
-        run: pnpm i
+        run: pnpm --version && pnpm i
 
       - name: Generate
         run: VITE_BASE_URL="PhotoEditor/" pnpm build
