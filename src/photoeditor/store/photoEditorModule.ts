@@ -1,5 +1,4 @@
 import { Module } from 'vuex';
-
 export interface OptionInterface<T = FilterProtoI> {
   name: string;
   func: T;
@@ -62,9 +61,6 @@ export default {
       : { width: 0, height: 0 },
   },
   mutations: {
-    setcropperstatus(state, status: boolean) {
-      state.isCropperOpen = status;
-    },
     applyfilter(state, { func, name }: OptionInterface) {
       state.curfiltername = name;
       sessionStorage.setItem('curfiltername', name);
@@ -102,15 +98,16 @@ export default {
         sessionStorage.removeItem(i);
       }
     },
-    initImage(state, { src, width, height }) {
+    setCropperData(state, { width, height }) {
       state.fileReady = true;
-      state.orginalsrc = src;
       state.cropperData.width = width;
       state.cropperData.height = height;
 
       sessionStorage.setItem('cropperData', JSON.stringify(state.cropperData));
       sessionStorage.setItem('fileReady', 'true');
-      sessionStorage.setItem('orginalsrc', src);
+    },
+    setcropperstatus(state, status: boolean) {
+      state.isCropperOpen = status;
     },
   },
   actions: {},

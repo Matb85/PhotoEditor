@@ -1,5 +1,7 @@
 <template>
   <section class="container">
+    <div v-if="showSpinner" class="lds-dual-ring"></div>
+
     <div class="canvas-container">
       <canvas v-show="store.state.photoEditor.fileReady" ref="canvas"></canvas>
     </div>
@@ -16,6 +18,7 @@ import { ElUpload } from 'element-plus';
 import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
 import { useStore } from 'vuex';
 import { detail } from '../utils';
+import * as OPFS from '../../store/fileSystem';
 const store = useStore();
 
 const ONCE = { once: true };
@@ -30,6 +33,7 @@ type CropperType = {
   customdestroy?: () => unknown;
 };
 
+let showSpinner = ref(false);
 const width = computed<number>(() => store.state.photoEditor.cropperData.width);
 const height = computed<number>(() => store.state.photoEditor.cropperData.height);
 const image = new Image();
@@ -40,38 +44,32 @@ function getCanvas() {
   return canvas.value as HTMLCanvasElement;
 }
 
-function initimage(event: InputEvent) {
+async function initimage(event: InputEvent) {
   const input = event.target as HTMLInputElement;
-  const reader = new FileReader();
-  reader.onload = () => {
-    image.onload = () => {
-      store.commit('photoEditor/initImage', {
-        src: reader.result,
-        width: image.width,
-        height: image.height,
-      });
-      aftermounted();
-    };
-    image.src = reader.result as string;
+  image.onload = () => {
+    store.commit('photoEditor/setCropperData', { width: image.width, height: image.height });
+    aftermounted();
   };
-  if (input.files) reader.readAsDataURL(input.files[0]);
+  if (input.files) {
+    image.src = await OPFS.saveFile(input.files[0]).catch((error) => {
+      alert(error);
+      return '';
+    });
+  }
 }
 
 async function aftermounted() {
-  ctx = getCanvas().getContext('2d') as CanvasRenderingContext2D;
-  image.src = store.state.photoEditor.orginalsrc;
-  image.onload = () => {
-    getCanvas().addEventListener(
-      'ready',
-      async () => {
-        await cropperchange(detail('customdestroy', []) as CustomEvent);
-        window.addEventListener('photoEditor/alterphoto', () => alterphoto());
-        window.addEventListener('photoEditor/cropperchange', (e) => cropperchange(e as CustomEvent));
-      },
-      ONCE
-    );
-    cropperchange(detail('init', []) as CustomEvent);
-  };
+  getCanvas().addEventListener(
+    'ready',
+    async () => {
+      await cropperchange(detail('customdestroy', []) as CustomEvent);
+      window.addEventListener('photoEditor/alterphoto', () => alterphoto());
+      window.addEventListener('photoEditor/cropperchange', (e) => cropperchange(e as CustomEvent));
+      showSpinner.value = false;
+    },
+    ONCE
+  );
+  cropperchange(detail('init', []) as CustomEvent);
 }
 
 function alterphoto(tempCanvas: HTMLCanvasElement | HTMLImageElement = croppedImage, filters = true) {
@@ -83,7 +81,8 @@ let cropper = {} as CropperType;
 
 async function initcropper() {
   getCanvas().width = image.naturalWidth;
-  getCanvas().height = image.height;
+  getCanvas().height = image.naturalHeight;
+  getCanvas().style.aspectRatio = image.naturalWidth + ' / ' + image.naturalHeight;
   alterphoto(image, false);
   cropper = new Cropper(getCanvas(), {
     initialAspectRatio: width.value / height.value,
@@ -105,6 +104,7 @@ async function initcropper() {
         () => {
           getCanvas().width = width.value;
           getCanvas().height = height.value;
+          getCanvas().style.aspectRatio = width.value + ' / ' + height.value;
           alterphoto();
           resolve();
         },
@@ -131,9 +131,14 @@ function download({ detail }: CustomEvent<{ format: string; quality: number }>) 
   a.click();
 }
 
-onMounted(() => {
+onMounted(async () => {
+  ctx = getCanvas().getContext('2d') as CanvasRenderingContext2D;
   cropper.init = initcropper;
-  if (store.state.photoEditor.fileReady) aftermounted();
+  if (store.state.photoEditor.fileReady) {
+    showSpinner.value = true;
+    image.onload = () => aftermounted();
+    image.src = await OPFS.loadFile();
+  }
   window.addEventListener('photoEditor/download', (e) => download(e as CustomEvent));
 });
 
@@ -159,6 +164,30 @@ onBeforeUnmount(() => {
 @media (max-width: 650px) {
   .photo-con {
     @apply w-full h-3/5 top-0;
+  }
+}
+.lds-dual-ring {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+}
+.lds-dual-ring:after {
+  content: ' ';
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid var(--el-color-primary);
+  border-color: var(--el-color-primary) transparent var(--el-color-primary) transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
 </style>
