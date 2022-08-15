@@ -24,6 +24,8 @@ export async function saveFile(file: File): Promise<string> {
   const OPFSfile = await storageRoot.getFileHandle('file', { create: true });
 
   // Open the `file.png` file as a writable stream ( FileSystemWritableFileStream ):
+  //eslint-disable-next-line
+  // @ts-ignore
   const wtr = await OPFSfile.createWritable();
   try {
     // Then write the Blob object directly:
