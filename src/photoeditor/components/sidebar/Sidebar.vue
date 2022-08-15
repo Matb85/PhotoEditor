@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { detail } from '../utils';
+import { detail } from '@/utils';
 import optionsFactory from './options';
 import CropperOptions from './optionComponents/CropperOptions.vue';
 import SliderOption from './optionComponents/SliderOption.vue';

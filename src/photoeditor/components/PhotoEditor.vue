@@ -6,9 +6,9 @@
 </template>
 
 <script setup lang="ts">
-import photoEditorModule from '../store/photoEditorModule';
-import Sidebar from './sidebar/Sidebar.vue';
-import Photo from './photo/Photo.vue';
+import photoEditorModule from '@/store/photoEditorModule';
+import Sidebar from '@/components/sidebar/Sidebar.vue';
+import Photo from '@/components/photo/Photo.vue';
 
 import { useStore } from 'vuex';
 import { onBeforeMount, onBeforeUnmount } from 'vue';

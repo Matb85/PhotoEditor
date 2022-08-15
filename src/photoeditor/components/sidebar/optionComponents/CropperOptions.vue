@@ -69,7 +69,7 @@
 </template>
 
 <script setup lang="ts">
-import { detail } from '../../utils';
+import { detail } from '../../../utils';
 import { ElButton, ElSlider, ElMenuItem } from 'element-plus';
 import { ref, watch, computed, onMounted, onBeforeUnmount } from 'vue';
 import { useStore } from 'vuex';

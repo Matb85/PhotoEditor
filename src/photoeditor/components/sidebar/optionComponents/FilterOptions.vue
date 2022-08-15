@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 import { ElRadioGroup, ElRadio } from 'element-plus';
-import { OptionInterface } from '../../../store/photoEditorModule';
+import { OptionInterface } from '@/store/photoEditorModule';
 import { useStore } from 'vuex';
 import { ref, watch } from 'vue';
 const store = useStore();

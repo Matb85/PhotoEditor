@@ -17,8 +17,8 @@ import 'cropperjs/dist/cropper.min.css';
 import { ElUpload } from 'element-plus';
 import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
 import { useStore } from 'vuex';
-import { detail } from '../utils';
-import * as OPFS from '../../store/fileSystem';
+import { detail } from '@/utils';
+import * as OPFS from '@/store/fileSystem';
 const store = useStore();
 
 const ONCE = { once: true };
