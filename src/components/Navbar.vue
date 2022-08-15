@@ -1,5 +1,5 @@
 <template>
-  <ElMenu mode="horizontal" class="navbar" :ellipsis="false" :default-active="'1'">
+  <ElMenu mode="horizontal" class="navbar" :ellipsis="false" :default-active="'2'">
     <h1 class="text-4xl mx-2">Photo editor</h1>
 
     <ElMenuItem index="1"><router-link to="/about">About</router-link></ElMenuItem>

@@ -4,6 +4,8 @@
 
 ## A working example: https://matb85.github.io/PhotoEditor/
 
+![ScreenShot](/screenshot.png)
+
 ### What's that?
 
 Photo Editor can be considered as a showcase of various tech. It is a Vue SPA utilizing [Element Plus](https://element-plus.org/), canvas filters and [Cropperjs](https://github.com/fengyuanchen/cropperjs).
@@ -61,7 +63,7 @@ Of course you can download the editor via npm as a commonjs or umd module. Pleas
     name: "your component",
     components:
       photoEditor: () => {
-      return import("@matb85/photoeditor")
+      return import("@matb85/photoeditor").PhotoEditor
         });
       },
     },
@@ -86,14 +88,14 @@ you can emit to your photoEditor using this.$root.$emit("photoEditor/event", arg
 - alterphoto - tells the photoEditor to update the photo (apply css filters)
 
 ```javascript
-this.$root.$emit('photoEditor/alterphoto'); // no arguments
+window.dispatchEvent(new CustomEvent('photoEditor/alterphoto')); // no arguments
 ```
 
 - cropperchange - calls a cropperjs method (works only when cropperjs is available)
 
 ```javascript
-this.$root.$emit("photoEditor/cropperchange",  cropperjsmethod, [array with arguments])
-this.$root.$emit("photoEditor/cropperchange",  "rotateTo", 20) //rotates the image to 20 degrees
+new CustomEvent('photoEditor/cropperchange', detail('cropperjsmethod', [array with arguments]));
+new CustomEvent('photoEditor/cropperchange', detail('rotateTo', [20])); //rotates the image to 20 degrees
 ```
 
 #### Vuex - actions
@@ -109,7 +111,7 @@ this.$store.dispatch('photoEditor/updatesettings', { func: cssfiltername, val: v
 - resetStore - reset the vuex module to its initial state and clear sessionStorage
 
 ```javascript
-this.$store.commit('photoEditor/resetStore');
+store.commit('photoEditor/resetStore');
 ```
 
 ### Cotributing
