@@ -6,7 +6,7 @@
 
 ### What's that?
 
-Photo Editor can be considered as a showcase of various tech. It is a Vue SPA utilizing [Buefy](https://buefy.org/), canvas filters and [Cropperjs](https://github.com/fengyuanchen/cropperjs).
+Photo Editor can be considered as a showcase of various tech. It is a Vue SPA utilizing [Element Plus](https://element-plus.org/), canvas filters and [Cropperjs](https://github.com/fengyuanchen/cropperjs).
 
 ### Usage - Spa
 
@@ -32,11 +32,11 @@ Of course you can download the editor via npm as a commonjs or umd module. Pleas
 </template>
 
 <script>
-  import "@matb85/photoeditor/dist/photoEditor.css";
-  import photoEditor from "@matb85/photoeditor";
+  import '@matb85/photoeditor/dist/photoEditor.css';
+  import photoEditor from '@matb85/photoeditor';
 
   export default {
-    name: "Home",
+    name: 'Home',
     components: {
       photoEditor,
     },
@@ -86,7 +86,7 @@ you can emit to your photoEditor using this.$root.$emit("photoEditor/event", arg
 - alterphoto - tells the photoEditor to update the photo (apply css filters)
 
 ```javascript
-this.$root.$emit("photoEditor/alterphoto"); // no arguments
+this.$root.$emit('photoEditor/alterphoto'); // no arguments
 ```
 
 - cropperchange - calls a cropperjs method (works only when cropperjs is available)
@@ -101,7 +101,7 @@ this.$root.$emit("photoEditor/cropperchange",  "rotateTo", 20) //rotates the ima
 - updatesettings - changes value of one css filter, in order to see the result call the alterphoto event
 
 ```javascript
-this.$store.dispatch("photoEditor/updatesettings", { func: cssfiltername, val: value });
+this.$store.dispatch('photoEditor/updatesettings', { func: cssfiltername, val: value });
 ```
 
 #### Vuex - mutations
@@ -109,7 +109,7 @@ this.$store.dispatch("photoEditor/updatesettings", { func: cssfiltername, val: v
 - resetStore - reset the vuex module to its initial state and clear sessionStorage
 
 ```javascript
-this.$store.commit("photoEditor/resetStore");
+this.$store.commit('photoEditor/resetStore');
 ```
 
 ### Cotributing
