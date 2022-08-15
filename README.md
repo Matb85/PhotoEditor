@@ -8,41 +8,41 @@
 
 ### What's that?
 
-Photo Editor can be considered as a showcase of various tech. It is a Vue SPA utilizing [Element Plus](https://element-plus.org/), canvas filters and [Cropperjs](https://github.com/fengyuanchen/cropperjs).
+PhotoEditor is a Vue SPA utilizing [Element Plus](https://element-plus.org/), canvas filters and [Cropperjs](https://github.com/fengyuanchen/cropperjs).
+You can install the core components via npm and use it in your own project.
 
 ### Usage - Spa
 
-Go to https://matb85.github.io/PhotoEditor/ Just upload a photo a start tweaking the sliders! Currently, there are 3 basic editing options:
+Go to https://matb85.github.io/PhotoEditor/, upload a photo and start tweaking the sliders! Currently, there are 3 basic editing options:
 
-- applying [canvas filters](https://developer.mozilla.org/en-US/docs/WebAPI/CanvasRenderingContext2D/filter) (same as css filters: brightness,saturation, hue rotate, contrast, opacity, grayscale, sepia, invert)
+- applying [canvas filters](https://developer.mozilla.org/en-US/docs/WebAPI/CanvasRenderingContext2D/filter) (same as css filters: brightness,saturation, hue rotate, contrast, grayscale, sepia, invert)
 - applying instagram filters thanks to [Instagram.css](https://githubcom/picturepan2/instagram.css)
 - cropping and rotating thanks to [Cropperjs](https://github.comfengyuanchen/cropperjs)
 
 ### Usage - Api
 
-#### Download and importing photoEditor
+#### Download and import PhotoEditor
 
-Of course you can download the editor via npm as a commonjs or umd module. Please remember that photoEditor requires Vuex!
+Of course you can download the editor via npm as an esm module. Please remember that PhotoEditor requires Vuex!
+
+```bash
+npm i @matb85/photoeditor
+pnpm add @matb85/photoeditor
+yarn add @matb85/photoeditor
+```
 
 - in a no ssr environment (e.g. Vue spa):
 
 ```html
 <template>
   <div>
-    <photoEditor />
+    <PhotoEditor />
   </div>
 </template>
 
-<script>
-  import '@matb85/photoeditor/dist/photoEditor.css';
-  import photoEditor from '@matb85/photoeditor';
-
-  export default {
-    name: 'Home',
-    components: {
-      photoEditor,
-    },
-  };
+<script setup>
+  import '@matb85/photoeditor/dist/photo-editor.css';
+  import PhotoEditor from '@matb85/photoeditor';
 </script>
 ```
 
@@ -58,12 +58,12 @@ Of course you can download the editor via npm as a commonjs or umd module. Pleas
 </template>
 
 <script>
-  import "@matb85/photoeditor/dist/photoEditor.css"
+  import '@matb85/photoeditor/dist/photo-editor.css'
   export default {
-    name: "your component",
+    name: 'your component',
     components:
-      photoEditor: () => {
-      return import("@matb85/photoeditor").PhotoEditor
+      PhotoEditor: () => {
+      return import('@matb85/photoeditor').PhotoEditor
         });
       },
     },
@@ -116,8 +116,7 @@ store.commit('photoEditor/resetStore');
 
 ### Cotributing
 
-Certainly, contributions are welcome. So if you'd like to addfunctionality or simply make it better, go ahead!
-These are the early days of this project so bugs are more than probableand some features may lack. I recommend raising a PR before doing anything.
+Certainly, contributions are welcome. So if you'd like to addfunctionality or simply make it better, go ahead, PRs welcome !:fire::fire::fire:
 
 ### Project setup
 
