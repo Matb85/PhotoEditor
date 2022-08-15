@@ -120,29 +120,29 @@ These are the early days of this project so bugs are more than probableand some 
 ### Project setup
 
 ```
-npm install
+pnpm install
 ```
 
 ### Compiles and hot-reloads for development
 
 ```
-npm run serve
+pnpm run dev
 ```
 
-### Compiles and minifies docs for production
+### Compiles the example app for production
 
 ```
-npm run build:docs
+pnpm run build
 ```
 
 ### Compiles and minifies the library for production
 
 ```
-npm run build:lib
+pnpm run build:lib
 ```
 
 ### Lints and fixes files
 
 ```
-npm run lint
+pnpm run lint
 ```

@@ -5,7 +5,7 @@ specifiers:
   '@typescript-eslint/parser': ^5.33.0
   '@vitejs/plugin-vue': ^3.0.3
   autoprefixer: ^10.4.8
-  cropperjs: ^1.5.11
+  cropperjs: ^1.5.12
   element-plus: ^2.2.13
   eslint: ^8.21.0
   eslint-config-prettier: ^8.5.0
@@ -26,7 +26,6 @@ dependencies:
   cropperjs: 1.5.12
   element-plus: 2.2.13_vue@3.2.37
   vue: 3.2.37
-  vue-router: 4.1.3_vue@3.2.37
 
 devDependencies:
   '@typescript-eslint/eslint-plugin': 5.33.0_njno5y7ry2l2lcmiu4tywxkwnq
@@ -43,6 +42,7 @@ devDependencies:
   typescript: 4.7.4
   vite: 3.0.7
   vite-plugin-pwa: 0.12.3_vite@3.0.7
+  vue-router: 4.1.3_vue@3.2.37
   vue-tsc: 0.39.5_typescript@4.7.4
   vuex: 4.0.2_vue@3.2.37
 
@@ -1670,6 +1670,7 @@ packages:
 
   /@vue/devtools-api/6.2.1:
     resolution: {integrity: sha512-OEgAMeQXvCoJ+1x8WyQuVZzFo0wcyCmUR3baRVLmKBo1LmYZWMlRiXlux5jd0fqVJu6PfDbOrZItVqUEzLobeQ==}
+    dev: true
 
   /@vue/reactivity-transform/3.2.37:
     resolution: {integrity: sha512-IWopkKEb+8qpu/1eMKVeXrK0NLw9HicGviJzhJDEyfxTR9e1WtpnnbYkJWurX6WwoFP0sz10xQg8yL8lgskAZg==}
@@ -4897,7 +4898,7 @@ packages:
     dependencies:
       '@vue/devtools-api': 6.2.1
       vue: 3.2.37
-    dev: false
+    dev: true
 
   /vue-tsc/0.39.5_typescript@4.7.4:
     resolution: {integrity: sha512-jhTsrKhZkafpIeN4Cbhr1K53hNfa/oesSrlh7hUaeHyCk55VhZT6oJkwJbtqN4MYkWZIwPrm3/xTwsELuf2ocg==}

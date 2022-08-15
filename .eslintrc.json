@@ -3,12 +3,7 @@
     "browser": true,
     "es2021": true
   },
-  "extends": [
-    "eslint:recommended",
-    "plugin:vue/vue3-essential",
-    "plugin:@typescript-eslint/recommended",
-    "prettier"
-  ],
+  "extends": ["eslint:recommended", "plugin:vue/vue3-essential", "plugin:@typescript-eslint/recommended", "prettier"],
   "parserOptions": {
     "ecmaVersion": "latest",
     "parser": "@typescript-eslint/parser",
@@ -23,5 +18,5 @@
     "semi": ["error", "always"],
     "vue/multi-word-component-names": "off"
   },
-  "ignorePatterns": ["**/*.cjs"]
+  "ignorePatterns": ["**/*.cjs", "**/*.d.ts"]
 }
