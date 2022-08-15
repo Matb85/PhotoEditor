@@ -30,6 +30,7 @@ export default defineConfig(() => {
     };
   else
     return {
+      base: process.env.VITE_BASE_URL || '/',
       resolve: { alias },
       plugins: [
         vue(),
