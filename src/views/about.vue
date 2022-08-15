@@ -41,3 +41,9 @@
     </article>
   </div>
 </template>
+
+<style scoped>
+a {
+  color: var(--el-color-primary);
+}
+</style>
