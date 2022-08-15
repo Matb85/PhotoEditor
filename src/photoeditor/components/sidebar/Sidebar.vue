@@ -6,15 +6,15 @@
     </ElSubMenu>
     <ElSubMenu index="2" @click="hideCropper">
       <template #title>Edit</template>
-      <OptionSlider v-for="option in options" :key="option.name" :option="option"></OptionSlider>
+      <SliderOption v-for="option in options" :key="option.name" :option="option"></SliderOption>
     </ElSubMenu>
     <ElSubMenu index="3" @click="hideCropper">
       <template #title>Apply effects</template>
-      <OptionSlider v-for="option in effects" :key="option.name" :option="option"></OptionSlider>
+      <SliderOption v-for="option in effects" :key="option.name" :option="option"></SliderOption>
     </ElSubMenu>
     <ElSubMenu index="4" @click="hideCropper">
       <template #title>Apply filters</template>
-      <OptionFilters :filters="filters"></OptionFilters>
+      <FilterOptions :filters="filters"></FilterOptions>
     </ElSubMenu>
   </ElMenu>
 </template>
@@ -22,9 +22,9 @@
 <script setup lang="ts">
 import { detail } from '../utils';
 import optionsFactory from './options';
-import OptionSlider from './optionComponents/optionSlider.vue';
-import OptionFilters from './optionComponents/optionCheckBox.vue';
-import CropperOptions from './optionComponents/cropperOptions.vue';
+import CropperOptions from './optionComponents/CropperOptions.vue';
+import SliderOption from './optionComponents/SliderOption.vue';
+import FilterOptions from './optionComponents/FilterOptions.vue';
 import { ElMenu, ElSubMenu } from 'element-plus';
 import { useStore } from 'vuex';
 const store = useStore();

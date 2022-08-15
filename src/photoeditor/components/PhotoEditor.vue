@@ -1,14 +1,14 @@
 <template>
   <div class="photoEditor">
-    <sidebar />
-    <photo />
+    <Sidebar />
+    <Photo />
   </div>
 </template>
 
 <script setup lang="ts">
 import photoEditorModule from '../store/photoEditorModule';
-import sidebar from './sidebar/sidebar.vue';
-import photo from './photo/photo.vue';
+import Sidebar from './sidebar/Sidebar.vue';
+import Photo from './photo/Photo.vue';
 
 import { useStore } from 'vuex';
 import { onBeforeMount, onBeforeUnmount } from 'vue';

@@ -3,5 +3,5 @@
 </template>
 
 <script setup lang="ts">
-import PhotoEditor from '../photoeditor/components/PhotoEditor.vue';
+import PhotoEditor from '@/components/PhotoEditor.vue';
 </script>
