@@ -2,9 +2,15 @@
   <ElMenuItem class="flex-col !h-auto" index="1">
     <span class="w-full -mb-2">Actions</span>
     <div class="w-full flex flex-wrap gap-1">
-      <ElButton type="primary" size="small" @click="start" :disabled="isCropperOpen">Start</ElButton>
-      <ElButton type="primary" size="small" @click="save" :disabled="!isCropperOpen">Save</ElButton>
-      <ElButton plain type="danger" size="small" @click="reset" :disabled="!isCropperOpen">Reset</ElButton>
+      <ElButton type="primary" size="small" @click="start" :disabled="store.state.photoEditor.isCropperOpen"
+        >Start</ElButton
+      >
+      <ElButton type="primary" size="small" @click="save" :disabled="!store.state.photoEditor.isCropperOpen"
+        >Save</ElButton
+      >
+      <ElButton plain type="danger" size="small" @click="reset" :disabled="!store.state.photoEditor.isCropperOpen"
+        >Reset</ElButton
+      >
     </div>
   </ElMenuItem>
   <ElMenuItem class="flex-col !h-auto" index="1">
@@ -12,7 +18,7 @@
     <div class="w-full flex flex-wrap gap-1">
       <ElButton
         v-for="btn in aspectRatiosBtns"
-        :disabled="!isCropperOpen"
+        :disabled="!store.state.photoEditor.isCropperOpen"
         :key="btn.key"
         :plain="btn.val != curAspectRatio"
         @click="curAspectRatio = btn.val"
@@ -28,7 +34,7 @@
       <span class="font-thin" @click="rotation = 0">reset</span>
     </div>
     <ElSlider
-      :disabled="!isCropperOpen"
+      :disabled="!store.state.photoEditor.isCropperOpen"
       v-model="rotation"
       :max="22.5"
       :min="-22.5"
@@ -36,10 +42,28 @@
       size="small"
     ></ElSlider>
     <div class="w-full flex flex-wrap gap-1 pt-2">
-      <ElButton :disabled="!isCropperOpen" plain type="primary" size="small" @click="additionalrot += 90">90°</ElButton>
-      <ElButton :disabled="!isCropperOpen" plain type="primary" size="small" @click="additionalrot += 45">45°</ElButton>
-      <ElButton :disabled="!isCropperOpen" plain type="primary" size="small" @click="flip('X')">flip h</ElButton>
-      <ElButton :disabled="!isCropperOpen" plain type="primary" size="small" @click="flip('Y')">flip v</ElButton>
+      <ElButton
+        :disabled="!store.state.photoEditor.isCropperOpen"
+        plain
+        type="primary"
+        size="small"
+        @click="additionalrot += 90"
+        >90°</ElButton
+      >
+      <ElButton
+        :disabled="!store.state.photoEditor.isCropperOpen"
+        plain
+        type="primary"
+        size="small"
+        @click="additionalrot += 45"
+        >45°</ElButton
+      >
+      <ElButton :disabled="!store.state.photoEditor.isCropperOpen" plain type="primary" size="small" @click="flip('X')"
+        >flip h</ElButton
+      >
+      <ElButton :disabled="!store.state.photoEditor.isCropperOpen" plain type="primary" size="small" @click="flip('Y')"
+        >flip v</ElButton
+      >
     </div>
   </ElMenuItem>
 </template>
@@ -100,13 +124,12 @@ watch(additionalrot, () => {
   );
 });
 
-let isCropperOpen = ref(false);
 function reset() {
   window.dispatchEvent(new CustomEvent('photoEditor/cropperchange', detail('reset', [])));
 }
 function start() {
   window.dispatchEvent(new CustomEvent('photoEditor/cropperchange', detail('init', [])));
-  isCropperOpen.value = true;
+  store.commit('photoEditor/setcropperstatus', true);
 }
 function save() {
   window.dispatchEvent(new CustomEvent('photoEditor/cropperchange', detail('customdestroy', [])));
@@ -119,7 +142,7 @@ function flip(axis: 'X' | 'Y') {
 }
 function disableOptions(e: CustomEvent) {
   const { func }: { func: string } = e.detail;
-  if (func == 'customdestroy') isCropperOpen.value = false;
+  if (func == 'customdestroy') store.commit('photoEditor/setcropperstatus', false);
 }
 onMounted(() => window.addEventListener('photoEditor/cropperchange', (e) => disableOptions(e as CustomEvent)));
 onBeforeUnmount(() => window.removeEventListener('photoEditor/cropperchange', (e) => disableOptions(e as CustomEvent)));

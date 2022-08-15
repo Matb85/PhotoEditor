@@ -5,13 +5,12 @@ export interface OptionInterface<T = FilterProtoI> {
   func: T;
 }
 interface State {
+  isCropperOpen: boolean;
   orginalsrc: string;
   fileReady: boolean;
   curfilter: FilterI;
   curfiltername: string;
   curset: FilterI;
-  width?: string;
-  height?: string;
   cropperData: { width: number; height: number };
 }
 interface FilterI {
@@ -44,9 +43,8 @@ function init(f: FilterProtoI): FilterI {
 export default {
   namespaced: true,
   state: {
+    isCropperOpen: false,
     orginalsrc: sessionStorage.getItem('orginalsrc') || '',
-    width: sessionStorage.getItem('width'),
-    height: sessionStorage.getItem('height'),
     //
     fileReady: sessionStorage.getItem('fileReady') ? true : false,
     curfiltername: sessionStorage.getItem('curfiltername') ? sessionStorage.getItem('curfiltername') : 'default',
@@ -61,9 +59,12 @@ export default {
     //
     cropperData: sessionStorage.getItem('cropperData')
       ? JSON.parse(sessionStorage.getItem('cropperData') as string)
-      : { width: sessionStorage.getItem('width'), height: sessionStorage.getItem('height') },
+      : { width: 0, height: 0 },
   },
   mutations: {
+    setcropperstatus(state, status: boolean) {
+      state.isCropperOpen = status;
+    },
     applyfilter(state, { func, name }: OptionInterface) {
       state.curfiltername = name;
       sessionStorage.setItem('curfiltername', name);
@@ -104,11 +105,9 @@ export default {
     initImage(state, { src, width, height }) {
       state.fileReady = true;
       state.orginalsrc = src;
-      state.width = state.cropperData.width = width;
-      state.height = state.cropperData.height = height;
+      state.cropperData.width = width;
+      state.cropperData.height = height;
 
-      sessionStorage.setItem('width', width);
-      sessionStorage.setItem('height', height);
       sessionStorage.setItem('cropperData', JSON.stringify(state.cropperData));
       sessionStorage.setItem('fileReady', 'true');
       sessionStorage.setItem('orginalsrc', src);

@@ -32,7 +32,8 @@ const store = useStore();
 const { effects, options, filters } = optionsFactory(store);
 
 function hideCropper() {
-  window.dispatchEvent(new CustomEvent('photoEditor/cropperchange', detail('customdestroy', [])));
+  if (store.state.photoEditor.isCropperOpen)
+    window.dispatchEvent(new CustomEvent('photoEditor/cropperchange', detail('customdestroy', [])));
 }
 </script>
 
