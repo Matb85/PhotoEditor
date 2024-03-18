@@ -1,6 +1,6 @@
 {
   "name": "vite-project",
-  "private": true,
+  "private": false,
   "version": "2.1.0",
   "type": "module",
   "scripts": {
@@ -9,7 +9,8 @@
     "build:lib": "TARGET=LIB vite build",
     "lint": "eslint src/**/*{.ts,/vue}",
     "preview": "vite preview",
-    "release": "standard-version"
+    "release": "standard-version",
+    "pub": "pnpm run build && pnpm run build && pnpm publish"
   },
   "description": "A fully functional Photo Editor made with Vuejs",
   "author": "matb85",
