@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-6xl w-11/12 mx-auto" style="margin-top: 2rem">
+  <div class="max-w-6xl w-11/12 mx-auto pt-24" style="margin-top: 2rem">
     <h1 class="text-4xl font-medium">Photo Editor</h1>
     <h2 class="text-2xl">A fully functional free online Photo Editor</h2>
     <hr />
