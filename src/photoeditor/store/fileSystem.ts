@@ -31,7 +31,7 @@ export async function saveFile(file: File): Promise<string> {
     await wtr.write(file);
     // And safely close the file stream writer:
     await wtr.close();
-    return await readFile(file, true);
+    return await readFile(file, false);
   } catch (err) {
     console.error(err);
     try {
@@ -48,7 +48,7 @@ export async function loadFile(): Promise<string> {
     const savedFile = await storageRoot.getFileHandle('file'); // Surprisingly there isn't a "fileExists()" function: instead you need to iterate over all files, which is odd... https://wicg.github.io/file-system-access/
     // Get the `savedFile` as a DOM `File` object (as opposed to a `FileSystemFileHandle` object):
     const src = await readFile(await savedFile.getFile(), false);
-    return src.startsWith('data:image') ? src : sessionStorage.getItem('originalsrc') || '';
+    return savedFile['createWritable'] ? src : sessionStorage.getItem('originalsrc') || '';
   } catch (err) {
     console.error(err);
     return sessionStorage.getItem('originalsrc') || '';

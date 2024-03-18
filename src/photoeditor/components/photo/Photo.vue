@@ -78,10 +78,10 @@ async function aftermounted() {
   getCanvas().addEventListener(
     'ready',
     async () => {
+      showSpinner.value = false;
       await cropperchange(detail('customdestroy', []) as CustomEvent);
       window.addEventListener('photoEditor/alterphoto', () => alterphoto());
       window.addEventListener('photoEditor/cropperchange', (e) => cropperchange(e as CustomEvent));
-      showSpinner.value = false;
     },
     ONCE,
   );
@@ -99,6 +99,10 @@ async function initcropper() {
   getCanvas().width = image.naturalWidth;
   getCanvas().height = image.naturalHeight;
   getCanvas().style.aspectRatio = image.naturalWidth + ' / ' + image.naturalHeight;
+  getCanvas().style.transform = `scale(${Math.min((window.innerHeight - 80) / image.naturalHeight, (getCanvas().parentElement!.parentElement!.clientWidth - 80) / image.naturalWidth)})`;
+  window.onresize = () =>
+    (getCanvas().style.transform = `scale(${Math.min((window.innerHeight - 80) / image.naturalHeight, (getCanvas().parentElement!.parentElement!.clientWidth - 80) / image.naturalWidth)})`);
+
   alterphoto(image, false);
   cropper = new Cropper(getCanvas(), {
     initialAspectRatio: width.value / height.value,
@@ -177,20 +181,14 @@ onBeforeUnmount(() => {
 <style scoped>
 .container {
   @apply absolute right-0 bottom-0 h-full p-4 pt-20
-  flex flex-col justify-center items-center max-w-none;
+  flex flex-col justify-center items-center max-w-none overflow-hidden;
   width: calc(100% - theme('spacing.80'));
 }
-.canvas-container {
-  @apply bg-white max-w-full max-h-[100vh] block;
+.canvas-container,
+.container-container canvas {
+  @apply bg-white block;
 }
-.container canvas {
-  @apply bg-white w-full h-full block;
-}
-@media (max-width: 650px) {
-  .photo-con {
-    @apply w-full h-3/5 top-0;
-  }
-}
+
 .lds-dual-ring {
   display: block;
   width: 80px;
