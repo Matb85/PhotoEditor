@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.1.0](https://github.com/matb85/photoEditor/compare/v2.0.0...v2.1.0) (2024-03-18)
+
+
+### Features
+
+* :rocket: compile as a library ([f3faf37](https://github.com/matb85/photoEditor/commit/f3faf377f5d122b4dd2e95776c7dbf1eb767d1f4))
+
+
+### Bug Fixes
+
+* :ambulance: fix vite's base url ([f160387](https://github.com/matb85/photoEditor/commit/f16038776d256c64da639953ef44e35e999f6efd))
+* :bug: Photo's aspect-ratio ([1419a7d](https://github.com/matb85/photoEditor/commit/1419a7def6b8a706b19cfe4a892a834450c2f77b))
+* :bug: upload bug in Safari ([cbf635c](https://github.com/matb85/photoEditor/commit/cbf635cfff2780c7bbc026b6870cf0ffbd2503a8))
+* :memo: fix the docs ([c635eb1](https://github.com/matb85/photoEditor/commit/c635eb1faaf28f898b39a98400d0489f8a96db9a))
+* :memo: padding on the about page ([3228a19](https://github.com/matb85/photoEditor/commit/3228a19fae0c51bfea11174d7bbba00722de995f))
+
 ## [2.0.0](https://github.com/matb85/photoEditor/compare/v1.2.0...v2.0.0) (2022-08-15)
 
 
