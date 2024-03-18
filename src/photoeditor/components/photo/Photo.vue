@@ -1,20 +1,28 @@
 <template>
   <section class="container">
     <div v-if="showSpinner" class="lds-dual-ring"></div>
+    <div
+      v-if="!store.state.photoEditor.fileReady && !showSpinner"
+      class="el-upload el-upload--text"
+      @click="upload"
+      tabindex="0"
+    >
+      <div class="el-upload-dragger">
+        <img src="/upload.svg" class="w-12 h-12 object-contain mx-auto" />
+        <p class="px-8">click to upload you photo</p>
+      </div>
+      <input @input="initimage" class="el-upload__input" name="file" accept=".jpg,.jpeg,.png" type="file" />
+    </div>
 
     <div class="canvas-container">
       <canvas v-show="store.state.photoEditor.fileReady" ref="canvas"></canvas>
     </div>
-    <ElUpload v-if="!store.state.photoEditor.fileReady" @input="initimage" accept=".jpg,.jpeg,.png" drag>
-      <p>Drop your file here or click to upload</p>
-    </ElUpload>
   </section>
 </template>
 
 <script setup lang="ts">
 import Cropper from 'cropperjs';
 import 'cropperjs/dist/cropper.min.css';
-import { ElUpload } from 'element-plus';
 import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
 import { useStore } from 'vuex';
 import { detail } from '@/utils';
@@ -44,18 +52,26 @@ function getCanvas() {
   return canvas.value as HTMLCanvasElement;
 }
 
-async function initimage(event: InputEvent) {
+function upload() {
+  (document.querySelector('.el-upload input') as HTMLInputElement).click();
+}
+
+function initimage(event: Event) {
   const input = event.target as HTMLInputElement;
   image.onload = () => {
+    showSpinner.value = false;
     store.commit('photoEditor/setCropperData', { width: image.width, height: image.height });
     aftermounted();
   };
-  if (input.files) {
-    image.src = await OPFS.saveFile(input.files[0]).catch((error) => {
-      alert(error);
-      return '';
-    });
-  }
+  if (!input.files || !input.files[0]) return;
+  const file = input.files[0];
+
+  OPFS.saveFile(file)
+    .then((src) => {
+      showSpinner.value = true;
+      image.src = src;
+    })
+    .catch((error) => alert(error));
 }
 
 async function aftermounted() {
@@ -67,7 +83,7 @@ async function aftermounted() {
       window.addEventListener('photoEditor/cropperchange', (e) => cropperchange(e as CustomEvent));
       showSpinner.value = false;
     },
-    ONCE
+    ONCE,
   );
   cropperchange(detail('init', []) as CustomEvent);
 }
@@ -108,7 +124,7 @@ async function initcropper() {
           alterphoto();
           resolve();
         },
-        ONCE
+        ONCE,
       );
       croppedImage.src = cropper.getCroppedCanvas({ fillColor: '#fff' }).toDataURL('image/png', 1);
       cropper.destroy();
@@ -137,7 +153,16 @@ onMounted(async () => {
   if (store.state.photoEditor.fileReady) {
     showSpinner.value = true;
     image.onload = () => aftermounted();
-    image.src = await OPFS.loadFile();
+    const src = await OPFS.loadFile();
+    if (src == '' || !src) {
+      alert(
+        'failed to retrieve your image. You browser probably does not fully support the File System API. Please start over or try again.',
+      );
+      showSpinner.value = false;
+      store.commit('photoEditor/clearModule');
+      return;
+    }
+    image.src = src;
   }
   window.addEventListener('photoEditor/download', (e) => download(e as CustomEvent));
 });
@@ -152,11 +177,11 @@ onBeforeUnmount(() => {
 <style scoped>
 .container {
   @apply absolute right-0 bottom-0 h-full p-4 pt-20
-  flex justify-center items-center;
+  flex flex-col justify-center items-center max-w-none;
   width: calc(100% - theme('spacing.80'));
 }
 .canvas-container {
-  @apply bg-white max-w-full max-h-full block;
+  @apply bg-white max-w-full max-h-[100vh] block;
 }
 .container canvas {
   @apply bg-white w-full h-full block;
@@ -167,7 +192,7 @@ onBeforeUnmount(() => {
   }
 }
 .lds-dual-ring {
-  display: inline-block;
+  display: block;
   width: 80px;
   height: 80px;
 }

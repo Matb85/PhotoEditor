@@ -15,9 +15,6 @@
     <template #header>
       <p>Download</p>
     </template>
-    <template #footer>
-      <ElButton @click="download" type="primary">Download</ElButton>
-    </template>
     <section class="w-full flex flex-col items-center">
       <p class="text-xl mt-4 mb-2">image format</p>
       <ElRadioGroup v-model="format">
@@ -29,6 +26,9 @@
       <ElInputNumber v-model="quality"></ElInputNumber>
       <ElSlider size="small" class="my-2" :min="30" :max="100" :step="1" v-model="quality"></ElSlider>
     </section>
+    <template #footer>
+      <ElButton @click="download" :disabled="!store.state.photoEditor.fileReady" type="primary">Download</ElButton>
+    </template>
   </ElDialog>
 </template>
 
@@ -57,7 +57,7 @@ function startOver() {
 
 function download() {
   window.dispatchEvent(
-    new CustomEvent('photoEditor/download', { detail: { format: format.value, quality: quality.value } })
+    new CustomEvent('photoEditor/download', { detail: { format: format.value, quality: quality.value } }),
   );
   dialogVisible.value = false;
 }

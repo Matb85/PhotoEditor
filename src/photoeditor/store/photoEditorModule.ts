@@ -5,7 +5,7 @@ export interface OptionInterface<T = FilterProtoI> {
 }
 interface State {
   isCropperOpen: boolean;
-  orginalsrc: string;
+  originalsrc: string;
   fileReady: boolean;
   curfilter: FilterI;
   curfiltername: string;
@@ -43,7 +43,7 @@ export default {
   namespaced: true,
   state: {
     isCropperOpen: false,
-    orginalsrc: sessionStorage.getItem('orginalsrc') || '',
+    originalsrc: sessionStorage.getItem('originalsrc') || '',
     //
     fileReady: sessionStorage.getItem('fileReady') ? true : false,
     curfiltername: sessionStorage.getItem('curfiltername') ? sessionStorage.getItem('curfiltername') : 'default',
@@ -85,7 +85,7 @@ export default {
     },
     clearModule(state) {
       Object.assign(state, {
-        orginalsrc: '',
+        originalsrc: '',
         width: 0,
         height: 0,
         fileReady: false,
