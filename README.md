@@ -1,6 +1,6 @@
 # Photo Editor
 
-## A fully functional free online Photo Editor
+## A fully functional free online Photo Editor (works only in Chromium browsers for now)
 
 ## A working example: https://matb85.github.io/PhotoEditor/
 
